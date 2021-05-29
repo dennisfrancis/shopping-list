@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Units } from "../consts/itemConsts";
 
 export type Item = {
     name: string;
@@ -80,6 +81,7 @@ export function ItemControls(props: ItemControlProps) {
             <input type="number"
                 id="qty-input"
                 aria-label="Quantity"
+                min="1"
                 required
                 onChange={handleQtyChange}
                 value={quantity}></input>
@@ -87,10 +89,15 @@ export function ItemControls(props: ItemControlProps) {
             <label htmlFor="unit-input">Unit</label>
             <input type="text"
                 id="unit-input"
+                list="unit-list"
                 aria-label="Unit"
                 required
                 onChange={handleUnitChange}
                 value={unit}></input>
+
+            <datalist id="unit-list">
+                {[...Units].map(unit => <option key={unit} value={unit}/>)}
+            </datalist>
 
             <label htmlFor="comments-input">Comments</label>
             <input type="text"
