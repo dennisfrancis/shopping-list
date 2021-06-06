@@ -45,6 +45,23 @@ class ShoppingDatabase {
         });
     }
 
+    getShoppingListItems(maxCount: number = -1) {
+        return new Promise((resolve, reject) => {
+            let objectStore = this.db.transaction(DB_SHOPPING_LIST_STORE_NAME).objectStore(DB_SHOPPING_LIST_STORE_NAME);
+            let getReq = objectStore.getAll(null, maxCount > 0 ? maxCount : undefined);
+            getReq.onerror = function(event: Event) {
+                console.debug('getShoppingListItems getAll() failed');
+                reject(DB_SHOPPING_LIST_STORE_NAME + ' getAll: errCode' +
+                    event && event.target ? (event.target as any).errorCode : 'unknown');
+            };
+
+            getReq.onsuccess = function(this: IDBRequest<any[]>) {
+                console.debug('getShoppingListItems: getAll() succeeded.');
+                resolve(this.result);
+            };
+        });
+    }
+
     addUpdateShoppingListItem(item: ShoppingListItem) {
         return new Promise((resolve, reject) => {
             let objectStore = this.db.transaction(DB_SHOPPING_LIST_STORE_NAME, "readwrite").objectStore(DB_SHOPPING_LIST_STORE_NAME);
@@ -92,10 +109,13 @@ class ShoppingDatabase {
     }
 }
 
-export const openDb = () => {
+export const openDb = (storageDb: IDBFactory, beSilent: boolean = false) => {
+    if (beSilent) {
+        console.debug = () => {};
+    }
     return new Promise(function(resolve: (db: ShoppingDatabase) => any, reject) {
         console.debug('Opening DB: ' + DB_NAME);
-        var openDbReq = indexedDB.open(DB_NAME, DB_VERSION);
+        var openDbReq = storageDb.open(DB_NAME, DB_VERSION);
         openDbReq.onsuccess = function(this: IDBRequest<IDBDatabase>) {
             console.debug('Opened DB: ' + DB_NAME);
             resolve(new ShoppingDatabase(this.result));
