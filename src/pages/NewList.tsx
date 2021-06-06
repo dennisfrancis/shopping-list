@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { ItemControls, Item } from "../components/ItemControls";
+import { Item } from '../types/item';
+import { ItemControls } from "../components/ItemControls";
 import { DebugItemLists } from "../components/DebugItemLists";
 
 function NewList() {

@@ -1,12 +1,6 @@
 import React, { useState } from "react";
 import { Units } from "../consts/itemConsts";
-
-export type Item = {
-    name: string;
-    quantity: number;
-    unit: string;
-    comment: string;
-};
+import { Item } from '../types/item';
 
 type ItemControlProps = {
     masterList: Set<string>;

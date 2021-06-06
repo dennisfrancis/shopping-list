@@ -1,4 +1,4 @@
-import { Item } from "./ItemControls";
+import { Item } from '../types/item';
 
 export function DebugItemLists(props: {
     masterList: Set<string>;
