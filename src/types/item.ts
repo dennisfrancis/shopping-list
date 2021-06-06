@@ -4,3 +4,7 @@ export type Item = {
     unit: string;
     comment: string;
 };
+
+export type ShoppingListItem = Item & {
+    date: Date;
+}
