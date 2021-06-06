@@ -92,7 +92,7 @@ class ShoppingDatabase {
     }
 }
 
-const openDb = () => {
+export const openDb = () => {
     return new Promise(function(resolve: (db: ShoppingDatabase) => any, reject) {
         console.debug('Opening DB: ' + DB_NAME);
         var openDbReq = indexedDB.open(DB_NAME, DB_VERSION);
@@ -124,11 +124,3 @@ const openDb = () => {
         }
     });
 }
-
-export let shoppingDb: ShoppingDatabase;
-export let shoppingDbError: string;
-openDb().then(function(db) {
-    shoppingDb = db;
-}).catch(function(reason) {
-    shoppingDbError = reason + '';
-});
