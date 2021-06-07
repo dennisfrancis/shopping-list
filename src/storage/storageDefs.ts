@@ -1,4 +1,4 @@
-import { Item, ShoppingListItem } from '../types/item';
+import { Item, ShoppingListItem, cloneSItem } from '../types/item';
 
 const DB_NAME = 'shopping-list-app-db';
 const DB_VERSION = 1;
@@ -124,7 +124,9 @@ export class ShoppingDatabase {
                 this.result.forEach(function(prevItem) {
                     if (!found && prevItem.name === item.name) {
                         console.debug('addUpdateShoppingListItem: found a matching item, updating it...');
-                        let setReq = objectStore.put(item, prevItem.id);
+                        let itemClone = cloneSItem(item) as any;
+                        itemClone.id = prevItem.id;
+                        let setReq = objectStore.put(itemClone);
                         setReq.onerror = onerror;
                         setReq.onsuccess = onsuccess;
                         found = true;

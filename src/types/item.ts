@@ -18,3 +18,11 @@ export function SItemfromItem(item: Item, date?: Date): ShoppingListItem {
         date: date ? date : new Date()
     };
 }
+
+export function cloneItem(item: Item): Item {
+    return {...item};
+}
+
+export function cloneSItem(item: ShoppingListItem): ShoppingListItem {
+    return {...item};
+}
