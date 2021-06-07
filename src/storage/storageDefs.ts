@@ -5,7 +5,7 @@ const DB_VERSION = 1;
 const DB_MASTER_STORE_NAME = 'master-items-store';
 const DB_SHOPPING_LIST_STORE_NAME = 'shopping-list-store';
 
-class ShoppingDatabase {
+export class ShoppingDatabase {
     private db: IDBDatabase;
     constructor (db: IDBDatabase) {
         this.db = db;
@@ -22,7 +22,24 @@ class ShoppingDatabase {
             }
 
             request.onsuccess = function(this: IDBRequest<any[]>) {
-                console.debug('getMasterList getAll() succeded');
+                console.debug('getMasterList getAll() succeeded');
+                resolve(this.result);
+            }
+        });
+    }
+
+    clearMasterList() {
+        return new Promise((resolve, reject) => {
+            let request = this.db.transaction(DB_MASTER_STORE_NAME, "readwrite")
+                .objectStore(DB_MASTER_STORE_NAME).clear();
+            request.onerror = function(event: Event) {
+                console.debug('clearMasterList clear() failed');
+                reject(DB_MASTER_STORE_NAME + ' clear: errCode' +
+                    event && event.target ? (event.target as any).errorCode : 'unknown');
+            }
+
+            request.onsuccess = function(this: IDBRequest<undefined>) {
+                console.debug('clearMasterList clear() succeeded');
                 resolve(this.result);
             }
         });
@@ -62,10 +79,27 @@ class ShoppingDatabase {
         });
     }
 
-    addUpdateShoppingListItem(item: ShoppingListItem) {
+    clearShoppingList() {
+        return new Promise((resolve, reject) => {
+            let request = this.db.transaction(DB_SHOPPING_LIST_STORE_NAME, "readwrite")
+                .objectStore(DB_SHOPPING_LIST_STORE_NAME).clear();
+            request.onerror = function(event: Event) {
+                console.debug('clearShoppingList clear() failed');
+                reject(DB_SHOPPING_LIST_STORE_NAME + ' clear: errCode' +
+                    event && event.target ? (event.target as any).errorCode : 'unknown');
+            }
+
+            request.onsuccess = function(this: IDBRequest<undefined>) {
+                console.debug('clearShoppingList clear() succeeded');
+                resolve(this.result);
+            }
+        });
+    }
+
+    addUpdateShoppingListItem(item: ShoppingListItem, keyRangeOnly: (x: any) => IDBKeyRange = IDBKeyRange.only) {
         return new Promise((resolve, reject) => {
             let objectStore = this.db.transaction(DB_SHOPPING_LIST_STORE_NAME, "readwrite").objectStore(DB_SHOPPING_LIST_STORE_NAME);
-            let getReq = objectStore.index('date').getAll(IDBKeyRange.only(item.date));
+            let getReq = objectStore.index('date').getAll(keyRangeOnly(item.date));
 
             getReq.onerror = function(event: Event) {
                 console.debug('addUpdateShoppingListItem .index("date").getAll() failed');
