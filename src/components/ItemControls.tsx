@@ -14,6 +14,7 @@ export function ItemControls(props: ItemControlProps) {
     let [quantity, setQuantity] = useState(0);
     let [unit, setUnit] = useState('');
     let [comment, setComment] = useState('');
+    let [existing, setExisting] = useState(false);
 
     let nextList:string[] = [];
     props.masterList.forEach(masterItem => {
@@ -27,7 +28,20 @@ export function ItemControls(props: ItemControlProps) {
         if (!newItemName || !quantity || !unit)
             return;
 
-        props.setNewList(currList => [...currList, {name: newItemName, quantity, unit, comment}]);
+        props.setNewList(currList => {
+            let matchItemIndex = currList.findIndex((item) => item.name === newItemName);
+            if (matchItemIndex === -1) {
+                return [...currList, {name: newItemName, quantity, unit, comment}];
+            }
+
+            let listCopy = [...currList];
+            let matchItem = listCopy[matchItemIndex];
+            matchItem.quantity = quantity;
+            matchItem.unit = unit;
+            matchItem.comment = comment;
+            return listCopy;
+        });
+
         props.setMasterList(currentSet => {
             if (currentSet.has(newItemName))
                 return currentSet;
@@ -39,10 +53,12 @@ export function ItemControls(props: ItemControlProps) {
         setQuantity(0);
         setUnit('');
         setComment('');
+        setExisting(false);
     }
 
     function handleItemNameChange(e: React.FormEvent<HTMLInputElement>) {
         setNewItemName(e.currentTarget.value);
+        setExisting(props.newList.findIndex((item) => item.name === e.currentTarget.value) !== -1);
     }
 
     function handleQtyChange(e: React.FormEvent<HTMLInputElement>) {
@@ -100,7 +116,7 @@ export function ItemControls(props: ItemControlProps) {
                 onChange={handleCommentsChange}
                 value={comment}></input>
             <br></br>
-            <input type="submit" value="Submit" onClick={handleNewItem}></input>
+            <input type="submit" value={existing ? "Modify" : "Add"} onClick={handleNewItem}></input>
         </form>
     );
 };
