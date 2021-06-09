@@ -6,7 +6,7 @@ import {
   Link
 } from "react-router-dom";
 
-import NewList from './pages/NewList';
+import { NewList } from './pages/NewList';
 import UserData from './pages/UserData';
 
 function App() {

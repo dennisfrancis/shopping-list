@@ -1,19 +1,27 @@
 import React, { useState } from "react";
 import { Units } from "../consts/itemConsts";
-import { Item } from '../types/item';
+import { Item, ItemStatesAndSetters } from '../types/item';
 
 type ItemControlProps = {
     masterList: Set<string>;
     setMasterList: React.Dispatch<React.SetStateAction<Set<string>>>;
     newList: Item[];
     setNewList: React.Dispatch<React.SetStateAction<Item[]>>;
+    newItemStatesAndSetters: ItemStatesAndSetters;
 };
 
 export function ItemControls(props: ItemControlProps) {
-    let [newItemName, setNewItemName] = useState('');
-    let [quantity, setQuantity] = useState(0);
-    let [unit, setUnit] = useState('');
-    let [comment, setComment] = useState('');
+    let {
+        name: newItemName,
+        setName: setNewItemName,
+        quantity,
+        setQuantity,
+        unit,
+        setUnit,
+        comment,
+        setComment
+    } = props.newItemStatesAndSetters;
+
     let [existing, setExisting] = useState(false);
 
     let nextList:string[] = [];

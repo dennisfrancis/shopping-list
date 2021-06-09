@@ -9,6 +9,17 @@ export type ShoppingListItem = Item & {
     date: Date;
 }
 
+export type ItemStatesAndSetters = {
+    name: string;
+    setName: (name: string) => void;
+    quantity: number;
+    setQuantity: (qty: number) => void;
+    unit: string;
+    setUnit: (unit: string) => void;
+    comment: string;
+    setComment: (comment: string) => void;
+}
+
 export function SItemfromItem(item: Item, date?: Date): ShoppingListItem {
     return {
         name: item.name,
