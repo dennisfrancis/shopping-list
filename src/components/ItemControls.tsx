@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Units } from "../consts/itemConsts";
 import { Item, ItemStatesAndSetters } from '../types/item';
 
@@ -19,10 +19,10 @@ export function ItemControls(props: ItemControlProps) {
         unit,
         setUnit,
         comment,
-        setComment
+        setComment,
+        existing,
+        setExisting
     } = props.newItemStatesAndSetters;
-
-    let [existing, setExisting] = useState(false);
 
     let nextList:string[] = [];
     props.masterList.forEach(masterItem => {

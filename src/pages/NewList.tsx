@@ -11,6 +11,7 @@ export function NewList() {
     let [quantity, setQuantity] = useState(0);
     let [unit, setUnit] = useState('');
     let [comment, setComment] = useState('');
+    let [existing, setExisting] = useState(false);
     let itemStatesAndSetters: ItemStatesAndSetters = {
         name,
         setName,
@@ -19,7 +20,9 @@ export function NewList() {
         unit,
         setUnit,
         comment,
-        setComment
+        setComment,
+        existing,
+        setExisting
     };
     let debugMode = false;
 
@@ -28,7 +31,7 @@ export function NewList() {
         <div style={{display: 'flex', flexDirection: 'row'}}>
             <ItemControls masterList={masterList} setMasterList={setMasterList}
                 newList={newList} setNewList={setNewList} newItemStatesAndSetters={itemStatesAndSetters}/>
-            <ItemList newList={newList}/>
+            <ItemList newList={newList} newItemStatesAndSetters={itemStatesAndSetters}/>
             {debugMode && <DebugItemLists masterList={masterList} newList={newList} />}
         </div>
     </div>);

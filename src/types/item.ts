@@ -18,6 +18,8 @@ export type ItemStatesAndSetters = {
     setUnit: (unit: string) => void;
     comment: string;
     setComment: (comment: string) => void;
+    existing: boolean;
+    setExisting: (val: boolean) => void;
 }
 
 export function SItemfromItem(item: Item, date?: Date): ShoppingListItem {
