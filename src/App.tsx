@@ -8,6 +8,17 @@ import {
 
 import { NewList } from './pages/NewList';
 import UserData from './pages/UserData';
+import { openDb } from './storage/storageDefs';
+import { StorageType, StorageProvider } from './contexts/storage';
+
+let storage = new StorageType();
+
+(function() {
+    openDb(indexedDB).then((db) => {
+      storage.setDB(db);
+      storage.fetch();
+    });
+})();
 
 function App() {
   return (
@@ -24,16 +35,18 @@ function App() {
           </ul>
         </nav>
 
-        {/* A <Switch> looks through its children <Route>s and
-            renders the first one that matches the current URL. */}
-        <Switch>
-          <Route path="/userdata">
-            <UserData />
-          </Route>
-          <Route path="/">
-            <NewList />
-          </Route>
-        </Switch>
+        <StorageProvider value={storage}>
+          {/* A <Switch> looks through its children <Route>s and
+              renders the first one that matches the current URL. */}
+          <Switch>
+            <Route path="/userdata">
+              <UserData />
+            </Route>
+            <Route path="/">
+                <NewList />
+            </Route>
+          </Switch>
+        </StorageProvider>
       </div>
     </Router>
   );

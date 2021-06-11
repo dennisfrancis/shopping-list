@@ -1,5 +1,7 @@
 import React from "react";
+import { useContext } from "react";
 import { Units } from "../consts/itemConsts";
+import { StorageContext } from "../contexts/storage";
 import { Item, ItemStatesAndSetters } from '../types/item';
 
 type ItemControlProps = {
@@ -11,6 +13,7 @@ type ItemControlProps = {
 };
 
 export function ItemControls(props: ItemControlProps) {
+    const storage = useContext(StorageContext)
     let {
         name: newItemName,
         setName: setNewItemName,
@@ -36,6 +39,7 @@ export function ItemControls(props: ItemControlProps) {
         if (!newItemName || !quantity || !unit)
             return;
 
+        storage.addUpdateMaster({name: newItemName, quantity, unit, comment});
         props.setNewList(currList => {
             let matchItemIndex = currList.findIndex((item) => item.name === newItemName);
             if (matchItemIndex === -1) {

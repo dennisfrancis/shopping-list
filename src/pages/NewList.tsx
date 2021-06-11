@@ -3,15 +3,19 @@ import { Item, ItemStatesAndSetters } from '../types/item';
 import { ItemControls } from "../components/ItemControls";
 import { DebugItemLists } from "../components/DebugItemLists";
 import { ItemList } from '../components/ItemList';
+import { useContext } from "react";
+import { StorageContext } from "../contexts/storage";
+import { useEffect } from "react";
 
 export function NewList() {
-    let [masterList, setMasterList] = useState(new Set<string>(['Cabbage', 'Banana', 'Carrot']));
+    let [masterList, setMasterList] = useState(new Set<string>([]));
     let [newList, setNewList] = useState<Item[]>([]);
     let [name, setName] = useState('');
     let [quantity, setQuantity] = useState(0);
     let [unit, setUnit] = useState('');
     let [comment, setComment] = useState('');
     let [existing, setExisting] = useState(false);
+    const storage = useContext(StorageContext);
     let itemStatesAndSetters: ItemStatesAndSetters = {
         name,
         setName,
@@ -24,6 +28,13 @@ export function NewList() {
         existing,
         setExisting
     };
+
+    useEffect(() => {
+        storage.addMasterListener((masterList) => {
+            setMasterList(new Set<string>(masterList.map(item => item.name)));
+        });
+    }, [storage]);
+
     let debugMode = false;
 
     return (<div>

@@ -12,7 +12,7 @@ export class ShoppingDatabase {
     }
 
     getMasterList() {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve: (x: Item[]) => void, reject) => {
             let request = this.db.transaction(DB_MASTER_STORE_NAME)
                 .objectStore(DB_MASTER_STORE_NAME).getAll();
             request.onerror = function(event: Event) {
@@ -63,7 +63,7 @@ export class ShoppingDatabase {
     }
 
     getShoppingListItems(maxCount: number = -1) {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve: (x: ShoppingListItem[]) => void, reject) => {
             let objectStore = this.db.transaction(DB_SHOPPING_LIST_STORE_NAME).objectStore(DB_SHOPPING_LIST_STORE_NAME);
             let getReq = objectStore.getAll(null, maxCount > 0 ? maxCount : undefined);
             getReq.onerror = function(event: Event) {
