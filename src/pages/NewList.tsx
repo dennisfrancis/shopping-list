@@ -35,13 +35,26 @@ export function NewList() {
         });
     }, [storage]);
 
+    const removeItem = (item: Item) => {
+        const nameToRemove = item.name;
+        const list = newList.filter(oldItem => oldItem.name !== nameToRemove);
+        setNewList(list);
+        if (name === nameToRemove) {
+            setName('');
+            setQuantity(0);
+            setUnit('');
+            setComment('');
+            setExisting(false);
+        }
+    };
+
     let debugMode = false;
 
     return (<div>
         <div style={{display: 'flex', flexDirection: 'row'}}>
             <ItemControls masterList={masterList} setMasterList={setMasterList}
                 newList={newList} setNewList={setNewList} newItemStatesAndSetters={itemStatesAndSetters}/>
-            <ItemList newList={newList} newItemStatesAndSetters={itemStatesAndSetters}/>
+            <ItemList newList={newList} newItemStatesAndSetters={itemStatesAndSetters} removeItem={removeItem}/>
             {debugMode && <DebugItemLists masterList={masterList} newList={newList} />}
         </div>
     </div>);

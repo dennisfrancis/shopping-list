@@ -3,12 +3,9 @@ import { Item, ItemStatesAndSetters } from "../types/item";
 
 export function ItemDisplay(props: {
     item: Item,
-    newItemStatesAndSetters: ItemStatesAndSetters
+    newItemStatesAndSetters: ItemStatesAndSetters,
+    removeItem: (x: Item) => void
 }) {
-    const itemStyle: React.CSSProperties = {display: 'flex', flexDirection: 'row', justifyContent: 'space-between'};
-
-    itemStyle.background = (props.newItemStatesAndSetters.name === props.item.name) ? '#00bfff' : '#ffffff';
-
     const handleItemClick = () => {
         props.newItemStatesAndSetters.setName(props.item.name);
         props.newItemStatesAndSetters.setQuantity(props.item.quantity);
@@ -16,11 +13,17 @@ export function ItemDisplay(props: {
         props.newItemStatesAndSetters.setComment(props.item.comment);
         props.newItemStatesAndSetters.setExisting(true);
     };
+    let selected = (props.newItemStatesAndSetters.name === props.item.name);
+    const removeItem = () => {
+        props.removeItem(props.item);
+    };
     return (
-        <div style={itemStyle} onClick={handleItemClick}>
-            <div>{props.item.name}</div>
-            { props.item.comment && <div>({props.item.comment})</div> }
-            <div>{props.item.quantity}&nbsp;{props.item.unit}</div>
-        </div>
+        <li className={"list-group-item d-flex justify-content-between align-items-start" + (selected ? " active" : "")}>
+            <div className="ms-2 me-auto" style={{width: "100vw"}} onClick={handleItemClick}>
+                <div className="fw-bold" style={{display: "inline"}}>{props.item.name + (props.item.comment ? ' (' + props.item.comment + ')' : '')}</div>
+                <div>{props.item.quantity}&nbsp;{props.item.unit}</div>
+            </div>
+            <button type="button" className="btn-close" aria-label="Close" onClick={removeItem}></button>
+        </li>
     );
 }
