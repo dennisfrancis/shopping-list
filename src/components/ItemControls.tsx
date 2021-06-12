@@ -85,50 +85,73 @@ export function ItemControls(props: ItemControlProps) {
         setComment(e.currentTarget.value);
     }
 
+    function handleClear() {
+        setNewItemName('');
+        setQuantity(0);
+        setUnit('');
+        setComment('');
+        setExisting(false);
+    }
+
     return (
-        <form style={{display: 'flex', flexDirection: 'column', justifyContent: 'space-between', maxWidth: 300}}>
-            <label htmlFor="item-search">Item name</label>
-            <input type="search" id="item-search"
-                list="next-item-list"
-                aria-label="Search through master list"
-                onChange={handleItemNameChange}
-                value={newItemName}
-                required></input>
+        <form style={{display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
+            alignContent: "center",
+            maxWidth: 400,  marginLeft: 15, padding: 25, background: "#99ccff", borderRadius: 10}}>
+            <div className="mb-3">
+                <label htmlFor="item-search" className="form-label">Item name</label>
+                <input type="search" id="item-search" className="form-control"
+                    list="next-item-list"
+                    aria-label="Search through master list"
+                    onChange={handleItemNameChange}
+                    value={newItemName}
+                    required></input>
+            </div>
 
             <datalist id="next-item-list">
                 {nextList.map(item => <option key={item} value={item}/>)}
             </datalist>
 
-            <label htmlFor="qty-input">Quantity</label>
-            <input type="number"
-                id="qty-input"
-                aria-label="Quantity"
-                min="1"
-                required
-                onChange={handleQtyChange}
-                value={quantity}></input>
+            <div className="mb-3">
+                <label htmlFor="qty-input" className="form-label">Quantity</label>
+                <input type="number" className="form-control"
+                    id="qty-input"
+                    aria-label="Quantity"
+                    min="1"
+                    required
+                    onChange={handleQtyChange}
+                    value={quantity}></input>
+            </div>
 
-            <label htmlFor="unit-input">Unit</label>
-            <input type="text"
-                id="unit-input"
-                list="unit-list"
-                aria-label="Unit"
-                required
-                onChange={handleUnitChange}
-                value={unit}></input>
+            <div className="mb-3">
+                <label htmlFor="unit-input" className="form-label">Unit</label>
+                <input type="text" className="form-control"
+                    id="unit-input"
+                    list="unit-list"
+                    aria-label="Unit"
+                    required
+                    onChange={handleUnitChange}
+                    value={unit}></input>
+            </div>
 
             <datalist id="unit-list">
                 {[...Units].map(unit => <option key={unit} value={unit}/>)}
             </datalist>
 
-            <label htmlFor="comments-input">Comments</label>
-            <input type="text"
-                id="comments-input"
-                aria-label="Comments"
-                onChange={handleCommentsChange}
-                value={comment}></input>
+            <div className="mb-3">
+                <label htmlFor="comments-input" className="form-label">Comments</label>
+                <input type="text" className="form-control"
+                    id="comments-input"
+                    aria-label="Comments"
+                    onChange={handleCommentsChange}
+                    value={comment}></input>
+            </div>
             <br></br>
-            <input type="submit" value={existing ? "Modify" : "Add"} onClick={handleNewItem}></input>
+            <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
+                <input type="submit" value={existing ? "Modify" : "Add"} className="btn btn-primary"
+                    onClick={handleNewItem} style={{flexGrow: 0.40}}></input>
+                <input type="button" value="Clear" className="btn btn-danger"
+                    onClick={handleClear} style={{flexGrow: 0.40}}></input>
+            </div>
         </form>
     );
 };

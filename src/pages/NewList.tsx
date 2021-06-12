@@ -38,7 +38,6 @@ export function NewList() {
     let debugMode = false;
 
     return (<div>
-        <h2>New shopping list</h2>
         <div style={{display: 'flex', flexDirection: 'row'}}>
             <ItemControls masterList={masterList} setMasterList={setMasterList}
                 newList={newList} setNewList={setNewList} newItemStatesAndSetters={itemStatesAndSetters}/>

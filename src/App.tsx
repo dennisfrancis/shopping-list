@@ -6,6 +6,8 @@ import {
   Link
 } from "react-router-dom";
 
+import './bootstrap.min.css';
+
 import { NewList } from './pages/NewList';
 import UserData from './pages/UserData';
 import { openDb } from './storage/storageDefs';
@@ -25,12 +27,12 @@ function App() {
     <Router>
       <div>
         <nav>
-          <ul>
-            <li>
-              <Link to="/">New list</Link>
+          <ul className="nav">
+            <li className="nav-item">
+              <Link to="/" className="nav-link">New list</Link>
             </li>
-            <li>
-              <Link to="/userdata">User data</Link>
+            <li className="nav-item">
+              <Link to="/userdata" className="nav-link">User data</Link>
             </li>
           </ul>
         </nav>
