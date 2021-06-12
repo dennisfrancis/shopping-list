@@ -9,7 +9,7 @@ export function ItemList(props: {
     return (
         <div style={{marginLeft: 20, width: '100%', maxWidth: 400}}>
             <p>Shopping list({props.newList.length})</p>
-            <ol className="list-group list-group-numbered">
+            <ol className="list-group list-group-numbered" style={{height: "80vh", overflowY:"auto"}}>
                 {props.newList.map(item =>
                     <ItemDisplay item={item} key={item.name}
                         newItemStatesAndSetters={props.newItemStatesAndSetters}

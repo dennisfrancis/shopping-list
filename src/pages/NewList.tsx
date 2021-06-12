@@ -50,12 +50,12 @@ export function NewList() {
 
     let debugMode = false;
 
-    return (<div>
-        <div style={{display: 'flex', flexDirection: 'row'}}>
+    return (
+        <div style={{display: 'flex', flexDirection: 'row', alignItems: "flex-start"}}>
             <ItemControls masterList={masterList} setMasterList={setMasterList}
                 newList={newList} setNewList={setNewList} newItemStatesAndSetters={itemStatesAndSetters}/>
             <ItemList newList={newList} newItemStatesAndSetters={itemStatesAndSetters} removeItem={removeItem}/>
             {debugMode && <DebugItemLists masterList={masterList} newList={newList} />}
         </div>
-    </div>);
+    );
 }
