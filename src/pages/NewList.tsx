@@ -9,6 +9,7 @@ import { useEffect } from "react";
 
 export function NewList() {
     let [masterList, setMasterList] = useState(new Set<string>([]));
+    let [masterItems, setMasterItems] = useState([] as Item[]);
     let [newList, setNewList] = useState<Item[]>([]);
     let [name, setName] = useState('');
     let [quantity, setQuantity] = useState(0);
@@ -32,6 +33,7 @@ export function NewList() {
     useEffect(() => {
         storage.addMasterListener((masterList) => {
             setMasterList(new Set<string>(masterList.map(item => item.name)));
+            setMasterItems(masterList);
         });
     }, [storage]);
 
@@ -53,7 +55,8 @@ export function NewList() {
     return (
         <div style={{display: 'flex', flexDirection: 'row', alignItems: "flex-start"}}>
             <ItemControls masterList={masterList} setMasterList={setMasterList}
-                newList={newList} setNewList={setNewList} newItemStatesAndSetters={itemStatesAndSetters}/>
+                newList={newList} setNewList={setNewList}
+                masterItems={masterItems} newItemStatesAndSetters={itemStatesAndSetters}/>
             <ItemList newList={newList} newItemStatesAndSetters={itemStatesAndSetters} removeItem={removeItem}/>
             {debugMode && <DebugItemLists masterList={masterList} newList={newList} />}
         </div>

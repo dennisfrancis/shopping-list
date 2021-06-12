@@ -6,6 +6,7 @@ import { Item, ItemStatesAndSetters } from '../types/item';
 
 type ItemControlProps = {
     masterList: Set<string>;
+    masterItems: Item[];
     setMasterList: React.Dispatch<React.SetStateAction<Set<string>>>;
     newList: Item[];
     setNewList: React.Dispatch<React.SetStateAction<Item[]>>;
@@ -70,6 +71,13 @@ export function ItemControls(props: ItemControlProps) {
 
     function handleItemNameChange(e: React.FormEvent<HTMLInputElement>) {
         setNewItemName(e.currentTarget.value);
+        let masterItem = props.masterItems.find((item) => item.name === e.currentTarget.value);
+        if (masterItem) {
+            setQuantity(masterItem.quantity);
+            setUnit(masterItem.unit);
+            setUnit(masterItem.unit);
+            setComment(masterItem.comment);
+        }
         setExisting(props.newList.findIndex((item) => item.name === e.currentTarget.value) !== -1);
     }
 
@@ -116,7 +124,7 @@ export function ItemControls(props: ItemControlProps) {
                 <input type="number" className="form-control"
                     id="qty-input"
                     aria-label="Quantity"
-                    min="1"
+                    min={1}
                     required
                     onChange={handleQtyChange}
                     value={quantity}></input>
