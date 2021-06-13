@@ -16,7 +16,12 @@ export class StorageType {
         this.db = db;
     }
 
+    public hasDB(): boolean {
+        return !!this.db;
+    }
+
     private invokeMasterListeners(items: Item[]) {
+        // console.log('Invoking ' + this.masterListeners.size + ' master listeners.');
         this.masterListeners.forEach((listener) => {
             listener(items);
         });
@@ -40,8 +45,16 @@ export class StorageType {
         this.masterListeners.add(listener);
     }
 
+    public removeMasterListener(listener: (x: Item[]) => void) {
+        this.masterListeners.delete(listener);
+    }
+
     public addSListListener(listener: (x: ShoppingListItem[]) => void) {
         this.sListListeners.add(listener);
+    }
+
+    public removeSListListener(listener: (x: ShoppingListItem[]) => void) {
+        this.sListListeners.delete(listener);
     }
 
     public addUpdateMaster(item: Item) {

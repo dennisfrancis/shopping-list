@@ -31,11 +31,25 @@ export function NewList() {
     };
 
     useEffect(() => {
-        storage.addMasterListener((masterList) => {
-            setMasterList(new Set<string>(masterList.map(item => item.name)));
-            setMasterItems(masterList);
-        });
-    }, [storage]);
+        if (masterList.size) {
+            return;
+        }
+
+        if (storage.hasDB()) {
+            // console.log('Fetching...');
+            storage.fetch();
+        }
+
+        const masterListener = (mList: Item[]) => {
+            setMasterList(new Set<string>(mList.map(item => item.name)));
+            setMasterItems(mList);
+        };
+        storage.addMasterListener(masterListener);
+
+        return function cleanup() {
+            storage.removeMasterListener(masterListener);
+        };
+    });
 
     const removeItem = (item: Item) => {
         const nameToRemove = item.name;
