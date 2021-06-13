@@ -83,6 +83,10 @@ export function ItemControls(props: ItemControlProps) {
     }
 
     function handleQtyChange(e: React.FormEvent<HTMLInputElement>) {
+        if (e.currentTarget.value === '') {
+            setQuantity(0);
+            return;
+        }
         setQuantity(parseInt(e.currentTarget.value));
     }
 
