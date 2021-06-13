@@ -16,6 +16,7 @@ export function NewList() {
     let [quantity, setQuantity] = useState(0);
     let [unit, setUnit] = useState('');
     let [comment, setComment] = useState('');
+    let [date, setDate] = useState(new Date());
     let [existing, setExisting] = useState(false);
     const storage = useContext(StorageContext);
     let itemStatesAndSetters: ItemStatesAndSetters = {
@@ -28,7 +29,9 @@ export function NewList() {
         comment,
         setComment,
         existing,
-        setExisting
+        setExisting,
+        date,
+        setDate
     };
 
     // fetch initial state from DB.
@@ -42,15 +45,31 @@ export function NewList() {
             storage.fetch();
         }
 
-        const masterListener = (mList: Item[]) => {
+        const dbListener = (mList: Item[]) => {
             setDBIsEmpty((mList.length === 0));
             setMasterList(new Set<string>(mList.map(item => item.name)));
-            setMasterItems(mList);
+            const nameToItem = new Map<string, Item>();
+            const currentList: Item[] = [];
+            mList.forEach((item) => {
+                if (!item.saved)
+                    currentList.push(item);
+
+                let prevItem = nameToItem.get(item.name);
+                if (!prevItem)
+                    nameToItem.set(item.name, item);
+                else if (prevItem.date < item.date)
+                    nameToItem.set(item.name, item);
+            });
+            setMasterItems([...nameToItem.values()]);
+            setNewList(currentList);
+            if (currentList.length) {
+                setDate(currentList[0].date);
+            }
         };
-        storage.addMasterListener(masterListener);
+        storage.addListener(dbListener);
 
         return function cleanup() {
-            storage.removeMasterListener(masterListener);
+            storage.removeListener(dbListener);
         };
     });
 

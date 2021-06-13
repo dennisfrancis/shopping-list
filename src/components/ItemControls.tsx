@@ -25,7 +25,8 @@ export function ItemControls(props: ItemControlProps) {
         comment,
         setComment,
         existing,
-        setExisting
+        setExisting,
+        date
     } = props.newItemStatesAndSetters;
 
     let nextList:string[] = [];
@@ -40,11 +41,11 @@ export function ItemControls(props: ItemControlProps) {
         if (!newItemName || !quantity || !unit)
             return;
 
-        storage.addUpdateMaster({name: newItemName, quantity, unit, comment});
+        storage.addUpdate({name: newItemName, quantity, unit, comment, saved: false, date});
         props.setNewList(currList => {
             let matchItemIndex = currList.findIndex((item) => item.name === newItemName);
             if (matchItemIndex === -1) {
-                return [...currList, {name: newItemName, quantity, unit, comment}];
+                return [...currList, {name: newItemName, quantity, unit, comment, saved: false, date}];
             }
 
             let listCopy = [...currList];
