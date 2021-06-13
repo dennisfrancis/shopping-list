@@ -9,6 +9,7 @@ import { useEffect } from "react";
 
 export function NewList() {
     let [masterList, setMasterList] = useState(new Set<string>([]));
+    let [dbIsEmpty, setDBIsEmpty] = useState(false);
     let [masterItems, setMasterItems] = useState([] as Item[]);
     let [newList, setNewList] = useState<Item[]>([]);
     let [name, setName] = useState('');
@@ -30,8 +31,9 @@ export function NewList() {
         setExisting
     };
 
+    // fetch initial state from DB.
     useEffect(() => {
-        if (masterList.size) {
+        if (masterList.size || dbIsEmpty) {
             return;
         }
 
@@ -41,6 +43,7 @@ export function NewList() {
         }
 
         const masterListener = (mList: Item[]) => {
+            setDBIsEmpty((mList.length === 0));
             setMasterList(new Set<string>(mList.map(item => item.name)));
             setMasterItems(mList);
         };
