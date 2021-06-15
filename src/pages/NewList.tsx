@@ -76,6 +76,7 @@ export function NewList() {
     const removeItem = (item: Item) => {
         const nameToRemove = item.name;
         const list = newList.filter(oldItem => oldItem.name !== nameToRemove);
+        storage.delete(item);
         setNewList(list);
         if (name === nameToRemove) {
             setName('');

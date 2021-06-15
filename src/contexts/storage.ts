@@ -46,6 +46,13 @@ export class StorageType {
 
         this.db.addUpdateItem(item);
     }
+
+    public delete(item: Item) {
+        if (!this.db)
+            return;
+
+        this.db.deleteItem(item);
+    }
 };
 
 export const StorageContext = React.createContext({} as StorageType);
