@@ -168,3 +168,45 @@ test('change item properties in db list', async () => {
         expect(item.date).toEqual(items[index].date);
     });
 });
+
+test('delete item in db list', async () => {
+    const db = await openDb(fakeIndexedDB, true /* beSilent */);
+    expect(db).toBeTruthy();
+    const date = new Date();
+    let items: Item[] = [
+        {
+            name: 'Cabbage',
+            quantity: 1,
+            unit: 'Kg',
+            comment: '',
+            saved: 0,
+            date
+        },
+        {
+            name: 'Chicken',
+            quantity: 1,
+            unit: 'Kg',
+            comment: 'curry cut',
+            saved: 0,
+            date
+        }
+    ];
+
+    items.forEach(async item => {
+        await db.addUpdateItem(item, FDBKeyRange.only);
+    });
+
+    await db.deleteItem(items[1], FDBKeyRange.only);
+
+    items = [items[0]];
+    const list = await db.getAllItems() as Item[];
+    expect(list).toHaveLength(items.length);
+
+    list.forEach((item, index) => {
+        expect(item.name).toEqual(items[index].name);
+        expect(item.quantity).toEqual(items[index].quantity);
+        expect(item.unit).toEqual(items[index].unit);
+        expect(item.comment).toEqual(items[index].comment);
+        expect(item.date).toEqual(items[index].date);
+    });
+});

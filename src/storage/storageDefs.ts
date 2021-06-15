@@ -64,6 +64,45 @@ export class ShoppingDatabase {
         });
     }
 
+    deleteItem(item: Item, keyRangeOnly: (x: any) => IDBKeyRange = IDBKeyRange.only) {
+        const transaction = this.db.transaction(DB_SHOPPING_LIST_STORE_NAME, "readwrite");
+        let objectStore = transaction.objectStore(DB_SHOPPING_LIST_STORE_NAME);
+        return this.getItemsWithDate(item.date, keyRangeOnly, transaction).then((items) => {
+            return new Promise((resolve, reject) => {
+                console.debug('deleteItem: getItemsWithDate succeeded');
+                let found = false;
+                const onerror = (event: Event) => {
+                    console.debug('deleteItem add/update failed');
+                    reject(DB_SHOPPING_LIST_STORE_NAME + ' add/update failed: errCode' +
+                        event && event.target ? (event.target as any).errorCode : 'unknown');
+                }
+
+                const onsuccess = function() {
+                    console.debug('deleteItem: add/update succeeded.');
+                    resolve(undefined);
+                }
+
+                items.forEach(function(matchItem: any) {
+                    if (!found && matchItem.name === item.name && matchItem.saved === item.saved) {
+                        console.debug('deleteItem: found a matching item, deleting it...');
+                        let setReq = objectStore.delete(keyRangeOnly(matchItem.id));
+                        setReq.onerror = onerror;
+                        setReq.onsuccess = onsuccess;
+                        found = true;
+                    }
+                });
+
+                if (!found) {
+                    console.debug('warning: deleteItem no matching entry.');
+                    resolve(undefined);
+                }
+            });
+        }).catch((reason: any) => {
+            console.debug('deleteItem: getItemsWithDate() failed');
+            return Promise.reject(DB_SHOPPING_LIST_STORE_NAME + ' getItemsWithDate: reason ' + reason);
+        });;
+    }
+
     clearAll() {
         return new Promise((resolve, reject) => {
             let request = this.db.transaction(DB_SHOPPING_LIST_STORE_NAME, "readwrite")
