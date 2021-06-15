@@ -36,7 +36,7 @@ test('items must persist in store', async () => {
             quantity: 1,
             unit: 'Kg',
             comment: '',
-            saved: false,
+            saved: 0,
             date
         },
         {
@@ -44,7 +44,7 @@ test('items must persist in store', async () => {
             quantity: 1,
             unit: 'Kg',
             comment: 'curry cut',
-            saved: false,
+            saved: 0,
             date
         }
     ];
@@ -65,6 +65,68 @@ test('items must persist in store', async () => {
     });
 });
 
+test('unsaved list', async () => {
+    const db = await openDb(fakeIndexedDB, true /* beSilent */);
+    expect(db).toBeTruthy();
+    const date = new Date();
+    const itemsSaved: Item[] = [
+        {
+            name: 'Cabbage',
+            quantity: 1,
+            unit: 'Kg',
+            comment: '',
+            saved: 1,
+            date
+        },
+        {
+            name: 'Chicken',
+            quantity: 1,
+            unit: 'Kg',
+            comment: 'curry cut',
+            saved: 1,
+            date
+        }
+    ];
+
+    const itemsUnsaved: Item[] = [
+        {
+            name: 'Beetroot',
+            quantity: 1,
+            unit: 'Kg',
+            comment: '',
+            saved: 0,
+            date
+        },
+        {
+            name: 'Eggs',
+            quantity: 10,
+            unit: 'No',
+            comment: '',
+            saved: 0,
+            date
+        }
+    ];
+
+    itemsSaved.forEach(async item => {
+        await db.addUpdateItem(item, FDBKeyRange.only);
+    })
+
+    itemsUnsaved.forEach(async item => {
+        await db.addUpdateItem(item, FDBKeyRange.only);
+    })
+
+    const unSavedList = await db.getItemsSaved(0, FDBKeyRange.only) as Item[];
+    expect(unSavedList).toHaveLength(itemsUnsaved.length);
+
+    unSavedList.forEach((item, index) => {
+        expect(item.name).toEqual(itemsUnsaved[index].name);
+        expect(item.quantity).toEqual(itemsUnsaved[index].quantity);
+        expect(item.unit).toEqual(itemsUnsaved[index].unit);
+        expect(item.comment).toEqual(itemsUnsaved[index].comment);
+        expect(item.date).toEqual(itemsUnsaved[index].date);
+    });
+});
+
 test('change item properties in db list', async () => {
     const db = await openDb(fakeIndexedDB, true /* beSilent */);
     expect(db).toBeTruthy();
@@ -75,7 +137,7 @@ test('change item properties in db list', async () => {
             quantity: 1,
             unit: 'Kg',
             comment: '',
-            saved: false,
+            saved: 0,
             date
         },
         {
@@ -83,7 +145,7 @@ test('change item properties in db list', async () => {
             quantity: 1,
             unit: 'Kg',
             comment: 'curry cut',
-            saved: false,
+            saved: 0,
             date
         }
     ];

@@ -1,10 +1,12 @@
+export type BooleanNumber = 0 | 1;
+
 export type Item = {
     name: string;
     quantity: number;
     unit: string;
     comment: string;
     date: Date;
-    saved: boolean;
+    saved: BooleanNumber;
 };
 
 export type ItemStatesAndSetters = {

@@ -41,11 +41,11 @@ export function ItemControls(props: ItemControlProps) {
         if (!newItemName || !quantity || !unit)
             return;
 
-        storage.addUpdate({name: newItemName, quantity, unit, comment, saved: false, date});
+        storage.addUpdate({name: newItemName, quantity, unit, comment, saved: 0, date});
         props.setNewList(currList => {
             let matchItemIndex = currList.findIndex((item) => item.name === newItemName);
             if (matchItemIndex === -1) {
-                return [...currList, {name: newItemName, quantity, unit, comment, saved: false, date}];
+                return [...currList, {name: newItemName, quantity, unit, comment, saved: 0, date}];
             }
 
             let listCopy = [...currList];

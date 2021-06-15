@@ -1,4 +1,4 @@
-import { Item, cloneItem } from '../types/item';
+import { Item, cloneItem, BooleanNumber } from '../types/item';
 
 const DB_NAME = 'shopping-list-app-db';
 const DB_VERSION = 2;
@@ -46,7 +46,7 @@ export class ShoppingDatabase {
         });
     }
 
-    getItemsSaved(saved: boolean, keyRangeOnly: (x: any) => IDBKeyRange = IDBKeyRange.only) {
+    getItemsSaved(saved: BooleanNumber, keyRangeOnly: (x: any) => IDBKeyRange = IDBKeyRange.only) {
         return new Promise((resolve: (items: Item[]) => void, reject) => {
             let objectStore = this.db.transaction(DB_SHOPPING_LIST_STORE_NAME).objectStore(DB_SHOPPING_LIST_STORE_NAME);
             let getReq = objectStore.index('saved').getAll(keyRangeOnly(saved));
