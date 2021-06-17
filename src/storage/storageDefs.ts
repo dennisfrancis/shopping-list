@@ -1,7 +1,7 @@
 import { Item, cloneItem, BooleanNumber } from '../types/item';
 
 const DB_NAME = 'shopping-list-app-db';
-const DB_VERSION = 2;
+const DB_VERSION = 3;
 const DB_SHOPPING_LIST_STORE_NAME = 'shopping-list-store';
 
 export class ShoppingDatabase {
@@ -188,12 +188,18 @@ export const openDb = (storageDb: IDBFactory, beSilent: boolean = false) => {
                 return;
             }
             const db: IDBDatabase = (event.currentTarget as any).result;
+            const tx: IDBTransaction = (event.target as any).transaction;
 
             if (!db.objectStoreNames.contains(DB_SHOPPING_LIST_STORE_NAME)) {
                 let listStore = db.createObjectStore(DB_SHOPPING_LIST_STORE_NAME,
                     { keyPath: 'id', autoIncrement: true});
                 listStore.createIndex('date', 'date', { unique: false });
                 listStore.createIndex('saved', 'saved', { unique: false });
+            } else {
+                let listStore = tx.objectStore(DB_SHOPPING_LIST_STORE_NAME);
+                if(!listStore.indexNames.contains('saved')) {
+                    listStore.createIndex('saved', 'saved', { unique: false });
+                }
             }
         };
         openDbReq.onblocked = function () {
