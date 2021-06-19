@@ -13,6 +13,7 @@ import { useEffect } from "react";
 
 
 import { NewList } from './pages/NewList';
+import { PreviousLists } from  './pages/PreviousLists';
 import UserData from './pages/UserData';
 import { openDb } from './storage/storageDefs';
 import { StorageType, StorageProvider } from './contexts/storage';
@@ -31,6 +32,7 @@ function App() {
   let [dbIsEmpty, setDBIsEmpty] = useState(false);
   let [masterItems, setMasterItems] = useState([] as Item[]);
   let [newList, setNewList] = useState<Item[]>([]);
+  let [dateMap, setDateMap] = useState<Map<number, Item[]>>(new Map<number, Item[]>());
   let [name, setName] = useState('');
   let [quantity, setQuantity] = useState(0);
   let [unit, setUnit] = useState('');
@@ -71,6 +73,7 @@ function App() {
           setMasterList(new Set<string>(mList.map(item => item.name)));
           const nameToItem = new Map<string, Item>();
           const currentList: Item[] = [];
+          const dateMapTemp = new Map<number, Item[]>();
           mList.forEach((item) => {
               if (!item.saved)
                   currentList.push(item);
@@ -80,12 +83,21 @@ function App() {
                   nameToItem.set(item.name, item);
               else if (prevItem.date < item.date)
                   nameToItem.set(item.name, item);
+
+              if (item.saved) {
+                const dateItemList = dateMapTemp.get(item.date.valueOf());
+                if (!dateItemList)
+                  dateMapTemp.set(item.date.valueOf(), [item]);
+                else
+                  dateItemList.push(item);
+              }
           });
           setMasterItems([...nameToItem.values()]);
           setNewList(currentList);
           if (currentList.length) {
               setDate(currentList[0].date);
           }
+          setDateMap(dateMapTemp);
       };
       storage.addListener(dbListener);
 
@@ -103,6 +115,9 @@ function App() {
               <Link to="/" className="nav-link">New list</Link>
             </li>
             <li className="nav-item">
+              <Link to="/previous" className="nav-link">Previous lists</Link>
+            </li>
+            <li className="nav-item">
               <Link to="/userdata" className="nav-link">User data</Link>
             </li>
           </ul>
@@ -114,6 +129,10 @@ function App() {
           <Switch>
             <Route path="/userdata">
               <UserData />
+            </Route>
+            <Route path="/previous">
+                <PreviousLists masterItems={masterItems} dateMap={dateMap}
+                  runFetchEffect={runFetchEffect} setRunFetchEffect={setRunFetchEffect}/>
             </Route>
             <Route path="/">
                 <NewList masterList={masterList} setMasterList={setMasterList}
