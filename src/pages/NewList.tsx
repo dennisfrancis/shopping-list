@@ -2,7 +2,7 @@ import React from "react";
 import { Item, ItemStatesAndSetters } from '../types/item';
 import { ItemControls } from "../components/ItemControls";
 import { DebugItemLists } from "../components/DebugItemLists";
-import { ItemList } from '../components/ItemList';
+import { NewItemList } from '../components/ItemList';
 import { useContext } from "react";
 import { StorageContext } from "../contexts/storage";
 
@@ -47,7 +47,7 @@ export function NewList(props: {
             <ItemControls masterList={props.masterList} setMasterList={props.setMasterList}
                 newList={props.newList} setNewList={props.setNewList}
                 masterItems={props.masterItems} newItemStatesAndSetters={props.newItemStatesAndSetters}/>
-            <ItemList newList={props.newList} newItemStatesAndSetters={props.newItemStatesAndSetters}
+            <NewItemList list={props.newList} newItemStatesAndSetters={props.newItemStatesAndSetters}
                 removeItem={removeItem} setRunFetchEffect={props.setRunFetchEffect}/>
             {debugMode && <DebugItemLists masterList={props.masterList} newList={props.newList} />}
         </div>

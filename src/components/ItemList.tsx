@@ -4,12 +4,26 @@ import { ItemDisplay } from '../components/ItemDisplay';
 import { StorageContext } from '../contexts/storage';
 
 export function ItemList(props: {
-    newList: Item[],
-    newItemStatesAndSetters: ItemStatesAndSetters,
+    list: Item[],
+    removeItem?: ((x: Item) => void),
+    newItemStatesAndSetters?: ItemStatesAndSetters
+}) {
+    return (
+        <ol className="list-group list-group-numbered" style={{maxHeight: "80vh", overflowY:"auto"}}>
+            {props.list.map(item =>
+                <ItemDisplay item={item} key={item.name}
+                    newItemStatesAndSetters={props.newItemStatesAndSetters}
+                    removeItem={props.removeItem}/>)}
+        </ol>
+    );
+}
+
+export function NewItemList(props: {
+    list: Item[],
     removeItem: (x: Item) => void,
+    newItemStatesAndSetters: ItemStatesAndSetters,
     setRunFetchEffect: (flag: boolean) => void
 }) {
-
     const storage = useContext(StorageContext);
 
     const clearNewItemControls = () => {
@@ -21,7 +35,7 @@ export function ItemList(props: {
     };
 
     const handleClear = () => {
-        if (props.newList.length === 0)
+        if (props.list.length === 0)
             return;
 
         storage.clearUnsaved()?.then(() => {
@@ -31,7 +45,7 @@ export function ItemList(props: {
     };
 
     const handleSave = () => {
-        if (props.newList.length === 0)
+        if (props.list.length === 0)
             return;
 
         const saveDate = new Date();
@@ -43,18 +57,14 @@ export function ItemList(props: {
 
     return (
         <div style={{marginLeft: 20, width: '100%', maxWidth: 400}}>
-            <p>Shopping list({props.newList.length})</p>
-            <ol className="list-group list-group-numbered" style={{maxHeight: "80vh", overflowY:"auto"}}>
-                {props.newList.map(item =>
-                    <ItemDisplay item={item} key={item.name}
-                        newItemStatesAndSetters={props.newItemStatesAndSetters}
-                        removeItem={props.removeItem}/>)}
-            </ol>
+            <p>Shopping list({props.list.length})</p>
+            <ItemList list={props.list} newItemStatesAndSetters={props.newItemStatesAndSetters}
+                removeItem={props.removeItem}/>
             <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between", marginTop: 10}}>
                 <input type="button" value="Save" className="btn btn-primary"
-                    onClick={handleSave} style={{flexGrow: 0.40}} disabled={props.newList.length === 0}></input>
+                    onClick={handleSave} style={{flexGrow: 0.40}} disabled={props.list.length === 0}></input>
                 <input type="button" value="Clear" className="btn btn-danger"
-                    onClick={handleClear} style={{flexGrow: 0.40}} disabled={props.newList.length === 0}></input>
+                    onClick={handleClear} style={{flexGrow: 0.40}} disabled={props.list.length === 0}></input>
             </div>
         </div>
     );

@@ -3,19 +3,24 @@ import { Item, ItemStatesAndSetters } from "../types/item";
 
 export function ItemDisplay(props: {
     item: Item,
-    newItemStatesAndSetters: ItemStatesAndSetters,
-    removeItem: (x: Item) => void
+    newItemStatesAndSetters?: ItemStatesAndSetters,
+    removeItem?: (x: Item) => void
 }) {
     const handleItemClick = () => {
+        if (!props.newItemStatesAndSetters)
+            return;
+
         props.newItemStatesAndSetters.setName(props.item.name);
         props.newItemStatesAndSetters.setQuantity(props.item.quantity);
         props.newItemStatesAndSetters.setUnit(props.item.unit);
         props.newItemStatesAndSetters.setComment(props.item.comment);
         props.newItemStatesAndSetters.setExisting(true);
     };
-    let selected = (props.newItemStatesAndSetters.name === props.item.name);
+
+    let selected = props.newItemStatesAndSetters ? (props.newItemStatesAndSetters.name === props.item.name) : false;
     const removeItem = () => {
-        props.removeItem(props.item);
+        if (props.removeItem)
+            props.removeItem(props.item);
     };
     return (
         <li className={"list-group-item d-flex justify-content-between align-items-start" + (selected ? " active" : "")}>
@@ -23,7 +28,7 @@ export function ItemDisplay(props: {
                 <div className="fw-bold" style={{display: "inline"}}>{props.item.name + (props.item.comment ? ' (' + props.item.comment + ')' : '')}</div>
                 <div>{props.item.quantity}&nbsp;{props.item.unit}</div>
             </div>
-            <button type="button" className="btn-close" aria-label="Close" onClick={removeItem}></button>
+            {props.removeItem && <button type="button" className="btn-close" aria-label="Close" onClick={removeItem}></button>}
         </li>
     );
 }
