@@ -131,8 +131,7 @@ function App() {
               <UserData />
             </Route>
             <Route path="/previous">
-                <PreviousLists masterItems={masterItems} dateMap={dateMap}
-                  runFetchEffect={runFetchEffect} setRunFetchEffect={setRunFetchEffect}/>
+                <PreviousLists dateMap={dateMap}/>
             </Route>
             <Route path="/">
                 <NewList masterList={masterList} setMasterList={setMasterList}

@@ -5,10 +5,7 @@ import { ItemList } from "../components/ItemList";
 import { useState } from "react";
 
 export function PreviousLists(props: {
-    masterItems: Item[];
     dateMap: Map<number, Item[]>;
-    runFetchEffect: boolean;
-    setRunFetchEffect: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
     let [selectedDate, setSelectedDate] = useState<number>(0);
     const dateList = [...props.dateMap.keys()].sort((date1, date2) => date2.valueOf() - date1.valueOf());
@@ -21,7 +18,7 @@ export function PreviousLists(props: {
                     <ol className="list-group list-group-numbered" style={{maxHeight: "80vh", maxWidth: 300, overflowY:"auto"}}>
                         { dateList.map(date =>
                             <ListDisplay date={date} items={props.dateMap.get(date) || []}
-                                key={date} selected={date === selectedDate} setSelectedDate={setSelectedDate}/> )}
+                                key={date} selected={date === selectedDate} setSelectedDate={setSelectedDate} readOnly={true}/> )}
                     </ol>
                 </div>
                 <div style={{marginLeft: 10, maxWidth: 400}}>

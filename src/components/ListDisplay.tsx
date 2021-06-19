@@ -6,6 +6,7 @@ export function ListDisplay(props: {
     items: Item[],
     selected: boolean;
     setSelectedDate: React.Dispatch<React.SetStateAction<number>>;
+    readOnly: boolean;
 }) {
     const handleListClick = () => {
         props.setSelectedDate(props.date);
@@ -21,7 +22,7 @@ export function ListDisplay(props: {
                 <div className="fw-bold" style={{display: "inline"}}>{new Date(props.date).toLocaleString()}</div>
                 <div>{props.items.length}&nbsp;items</div>
             </div>
-            <button type="button" className="btn-close" aria-label="Close" onClick={removeList}></button>
+            {!props.readOnly && <button type="button" className="btn-close" aria-label="Close" onClick={removeList}></button> }
         </li>
     );
 }
