@@ -210,3 +210,61 @@ test('delete item in db list', async () => {
         expect(item.date).toEqual(items[index].date);
     });
 });
+
+test('clear unsaved items in db list', async () => {
+    const db = await openDb(fakeIndexedDB, true /* beSilent */);
+    expect(db).toBeTruthy();
+    const date = new Date();
+    let items: Item[] = [
+        {
+            name: 'Cabbage',
+            quantity: 1,
+            unit: 'Kg',
+            comment: '',
+            saved: 0,
+            date
+        },
+        {
+            name: 'Rice powder',
+            quantity: 1,
+            unit: 'Packet(s)',
+            comment: '500gm',
+            saved: 1,
+            date
+        },
+        {
+            name: 'Chicken',
+            quantity: 1,
+            unit: 'Kg',
+            comment: 'curry cut',
+            saved: 0,
+            date
+        },
+        {
+            name: 'Garlic',
+            quantity: 250,
+            unit: 'gm',
+            comment: '',
+            saved: 1,
+            date
+        },
+    ];
+
+    items.forEach(async item => {
+        await db.addUpdateItem(item, FDBKeyRange.only);
+    });
+
+    await db.clearUnsaved(FDBKeyRange.only);
+
+    const list = await db.getAllItems() as Item[];
+    const savedItems = items.filter(item => item.saved === 1);
+    expect(list).toHaveLength(savedItems.length);
+
+    list.forEach((item, index) => {
+        expect(item.name).toEqual(savedItems[index].name);
+        expect(item.quantity).toEqual(savedItems[index].quantity);
+        expect(item.unit).toEqual(savedItems[index].unit);
+        expect(item.comment).toEqual(savedItems[index].comment);
+        expect(item.date).toEqual(savedItems[index].date);
+    });
+});

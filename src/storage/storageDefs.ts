@@ -46,9 +46,10 @@ export class ShoppingDatabase {
         });
     }
 
-    getItemsSaved(saved: BooleanNumber, keyRangeOnly: (x: any) => IDBKeyRange = IDBKeyRange.only) {
+    getItemsSaved(saved: BooleanNumber, keyRangeOnly: (x: any) => IDBKeyRange = IDBKeyRange.only, transaction?: IDBTransaction) {
         return new Promise((resolve: (items: Item[]) => void, reject) => {
-            let objectStore = this.db.transaction(DB_SHOPPING_LIST_STORE_NAME).objectStore(DB_SHOPPING_LIST_STORE_NAME);
+            let objectStore = (transaction ? transaction : this.db.transaction(DB_SHOPPING_LIST_STORE_NAME))
+                .objectStore(DB_SHOPPING_LIST_STORE_NAME);
             let getReq = objectStore.index('saved').getAll(keyRangeOnly(saved));
 
             getReq.onerror = function(event: Event) {
@@ -117,6 +118,29 @@ export class ShoppingDatabase {
                 console.debug('clearAll: clear() succeeded');
                 resolve(this.result);
             }
+        });
+    }
+
+    clearUnsaved(keyRangeOnly: (x: any) => IDBKeyRange = IDBKeyRange.only) {
+        const transaction = this.db.transaction(DB_SHOPPING_LIST_STORE_NAME, "readwrite");
+        let objectStore = transaction.objectStore(DB_SHOPPING_LIST_STORE_NAME);
+        return new Promise<undefined>((resolve, reject) => {
+            transaction.onerror = (event: Event) => {
+                console.debug('clearUnsaved: clear() failed');
+                reject(DB_SHOPPING_LIST_STORE_NAME + ' clear: errCode' +
+                    event && event.target ? (event.target as any).errorCode : 'unknown');
+            };
+
+            transaction.oncomplete = function() {
+                console.debug('clearUnsaved: clear() succeeded');
+                resolve(undefined);
+            };
+
+            this.getItemsSaved(0, keyRangeOnly, transaction).then((items: Item[]) => {
+                items.forEach(function(clearItem: any) {
+                    objectStore.delete(keyRangeOnly(clearItem.id));
+                });
+            }); // catch is not necessary, it will reject in transaction.onerror().
         });
     }
 
