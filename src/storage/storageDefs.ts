@@ -187,6 +187,35 @@ export class ShoppingDatabase {
             return Promise.reject(DB_SHOPPING_LIST_STORE_NAME + ' getItemsWithDate: reason ' + reason);
         });
     }
+
+    saveUnsaved(date: Date, keyRangeOnly: (x: any) => IDBKeyRange = IDBKeyRange.only) {
+        const transaction = this.db.transaction(DB_SHOPPING_LIST_STORE_NAME, "readwrite");
+        let objectStore = transaction.objectStore(DB_SHOPPING_LIST_STORE_NAME);
+        return new Promise<undefined>((resolve, reject) => {
+            transaction.onerror = (event: Event) => {
+                console.debug('saveUnsaved: transaction failed');
+                reject(DB_SHOPPING_LIST_STORE_NAME + ' transaction: errCode' +
+                    event && event.target ? (event.target as any).errorCode : 'unknown');
+            };
+
+            transaction.oncomplete = function() {
+                console.debug('saveUnsaved: transaction succeeded');
+                resolve(undefined);
+            };
+
+            this.getItemsSaved(0, keyRangeOnly, transaction).then((items: Item[]) => {
+                items.forEach(function(unSavedItem: Item) {
+                    const newItem = cloneItem(unSavedItem);
+                    newItem.date = date;
+                    newItem.saved = 1;
+                    objectStore.put(newItem);
+                });
+                items.forEach(function(unSavedItem: any) {
+                    objectStore.delete(keyRangeOnly(unSavedItem.id));
+                });
+            }); // catch is not necessary, it will reject in transaction.onerror().
+        });
+    }
 }
 
 export const openDb = (storageDb: IDBFactory, beSilent: boolean = false) => {

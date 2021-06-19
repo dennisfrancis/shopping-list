@@ -25,5 +25,12 @@ export type ItemStatesAndSetters = {
 }
 
 export function cloneItem(item: Item): Item {
-    return {...item};
+    return {
+        name: item.name,
+        quantity: item.quantity,
+        unit: item.unit,
+        comment: item.comment,
+        date: item.date,
+        saved: item.saved
+    };
 }

@@ -1,5 +1,5 @@
 import { openDb, ShoppingDatabase } from '../src/storage/storageDefs';
-import { Item } from '../src/types/item';
+import { cloneItem, Item } from '../src/types/item';
 
 declare class FDBKeyRangeWithOnly extends IDBKeyRange {
     only: (x: any) => IDBKeyRange;
@@ -62,6 +62,7 @@ test('items must persist in store', async () => {
         expect(item.unit).toEqual(items[index].unit);
         expect(item.comment).toEqual(items[index].comment);
         expect(item.date).toEqual(items[index].date);
+        expect(item.saved).toEqual(items[index].saved);
     });
 });
 
@@ -124,6 +125,7 @@ test('unsaved list', async () => {
         expect(item.unit).toEqual(itemsUnsaved[index].unit);
         expect(item.comment).toEqual(itemsUnsaved[index].comment);
         expect(item.date).toEqual(itemsUnsaved[index].date);
+        expect(item.saved).toEqual(itemsUnsaved[index].saved);
     });
 });
 
@@ -166,6 +168,7 @@ test('change item properties in db list', async () => {
         expect(item.unit).toEqual(items[index].unit);
         expect(item.comment).toEqual(items[index].comment);
         expect(item.date).toEqual(items[index].date);
+        expect(item.saved).toEqual(items[index].saved);
     });
 });
 
@@ -208,6 +211,7 @@ test('delete item in db list', async () => {
         expect(item.unit).toEqual(items[index].unit);
         expect(item.comment).toEqual(items[index].comment);
         expect(item.date).toEqual(items[index].date);
+        expect(item.saved).toEqual(items[index].saved);
     });
 });
 
@@ -266,5 +270,76 @@ test('clear unsaved items in db list', async () => {
         expect(item.unit).toEqual(savedItems[index].unit);
         expect(item.comment).toEqual(savedItems[index].comment);
         expect(item.date).toEqual(savedItems[index].date);
+        expect(item.saved).toEqual(savedItems[index].saved);
+    });
+});
+
+test('save unsaved items in db list', async () => {
+    const db = await openDb(fakeIndexedDB, true /* beSilent */);
+    expect(db).toBeTruthy();
+    const date = new Date();
+    let items: Item[] = [
+        {
+            name: 'Cabbage',
+            quantity: 1,
+            unit: 'Kg',
+            comment: '',
+            saved: 0,
+            date
+        },
+        {
+            name: 'Rice powder',
+            quantity: 1,
+            unit: 'Packet(s)',
+            comment: '500gm',
+            saved: 1,
+            date
+        },
+        {
+            name: 'Chicken',
+            quantity: 1,
+            unit: 'Kg',
+            comment: 'curry cut',
+            saved: 0,
+            date
+        },
+        {
+            name: 'Garlic',
+            quantity: 250,
+            unit: 'gm',
+            comment: '',
+            saved: 1,
+            date
+        },
+    ];
+
+    items.forEach(async item => {
+        await db.addUpdateItem(item, FDBKeyRange.only);
+    });
+
+    // save date.
+    const saveDate = new Date('4 June 2021 13:45:21');
+    await db.saveUnsaved(saveDate, FDBKeyRange.only);
+
+    const list = await db.getAllItems() as Item[];
+    const curItems: Item[] = [
+        ...items.filter(item => item.saved === 1),
+        ...items.filter(item => item.saved === 0)
+            .map(item => {
+                const newItem = cloneItem(item);
+                newItem.date = saveDate;
+                newItem.saved = 1;
+                return newItem;
+            })
+    ];
+    expect(list).toHaveLength(curItems.length);
+
+    list.forEach((item, index) => {
+        expect(item.name).toEqual(curItems[index].name);
+        expect(item.quantity).toEqual(curItems[index].quantity);
+        expect(item.unit).toEqual(curItems[index].unit);
+        expect(item.comment).toEqual(curItems[index].comment);
+        expect(item.date).toEqual(curItems[index].date);
+        expect(item.saved).toEqual(curItems[index].saved);
     });
 });
