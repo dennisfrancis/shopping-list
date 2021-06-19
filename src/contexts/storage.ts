@@ -53,6 +53,20 @@ export class StorageType {
 
         this.db.deleteItem(item);
     }
+
+    public clearUnsaved() {
+        if (!this.db)
+            return;
+
+        return this.db.clearUnsaved();
+    }
+
+    public saveUnsaved(saveDate: Date) {
+        if (!this.db)
+            return;
+
+        return this.db.saveUnsaved(saveDate);
+    }
 };
 
 export const StorageContext = React.createContext({} as StorageType);

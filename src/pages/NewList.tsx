@@ -18,6 +18,7 @@ export function NewList() {
     let [comment, setComment] = useState('');
     let [date, setDate] = useState(new Date());
     let [existing, setExisting] = useState(false);
+    let [runFetchEffect, setRunFetchEffect] = useState(false);
     const storage = useContext(StorageContext);
     let itemStatesAndSetters: ItemStatesAndSetters = {
         name,
@@ -36,7 +37,7 @@ export function NewList() {
 
     // fetch initial state from DB.
     useEffect(() => {
-        if (masterList.size || dbIsEmpty) {
+        if (!runFetchEffect && (masterList.size || dbIsEmpty)) {
             return;
         }
 
@@ -46,6 +47,8 @@ export function NewList() {
         }
 
         const dbListener = (mList: Item[]) => {
+            if (runFetchEffect)
+                setRunFetchEffect(false);
             setDBIsEmpty((mList.length === 0));
             setMasterList(new Set<string>(mList.map(item => item.name)));
             const nameToItem = new Map<string, Item>();
@@ -94,7 +97,8 @@ export function NewList() {
             <ItemControls masterList={masterList} setMasterList={setMasterList}
                 newList={newList} setNewList={setNewList}
                 masterItems={masterItems} newItemStatesAndSetters={itemStatesAndSetters}/>
-            <ItemList newList={newList} newItemStatesAndSetters={itemStatesAndSetters} removeItem={removeItem}/>
+            <ItemList newList={newList} newItemStatesAndSetters={itemStatesAndSetters}
+                removeItem={removeItem} setRunFetchEffect={setRunFetchEffect}/>
             {debugMode && <DebugItemLists masterList={masterList} newList={newList} />}
         </div>
     );
