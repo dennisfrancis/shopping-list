@@ -22,7 +22,7 @@ export function PreviousLists(props: {
                     </ol>
                 </div>
                 <div style={{marginLeft: 10, maxWidth: 400}}>
-                    { (selectedDate !== 0 && selectedItems !== undefined) && <ItemList list={selectedItems} /> }
+                    { (selectedDate !== 0 && selectedItems !== undefined) && <ItemList list={selectedItems} copyList={true}/> }
                 </div>
             </div>
         </div>
