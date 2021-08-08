@@ -6,6 +6,8 @@ import { NewItemList } from '../components/ItemList';
 import { useContext } from "react";
 import { StorageContext } from "../contexts/storage";
 
+import "../styles/newlist.css";
+
 export function NewList(props: {
     masterList: Set<string>;
     masterItems: Item[];
@@ -43,7 +45,7 @@ export function NewList(props: {
     let debugMode = false;
 
     return (
-        <div style={{display: 'flex', flexDirection: 'row', alignItems: "flex-start"}}>
+        <div id="newlist-wrapper">
             <ItemControls masterList={props.masterList} setMasterList={props.setMasterList}
                 newList={props.newList} setNewList={props.setNewList}
                 masterItems={props.masterItems} newItemStatesAndSetters={props.newItemStatesAndSetters}/>

@@ -4,6 +4,8 @@ import { Units } from "../consts/itemConsts";
 import { StorageContext } from "../contexts/storage";
 import { Item, ItemStatesAndSetters } from '../types/item';
 
+import '../styles/itemcontrols.css';
+
 type ItemControlProps = {
     masterList: Set<string>;
     masterItems: Item[];
@@ -107,9 +109,7 @@ export function ItemControls(props: ItemControlProps) {
     }
 
     return (
-        <form style={{display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
-            alignContent: "center",
-            maxWidth: 400,  marginLeft: 15, padding: 25, background: "#99ccff", borderRadius: 10}}>
+        <form id="item-controls">
             <div className="mb-3">
                 <label htmlFor="item-search" className="form-label">Item name</label>
                 <input type="search" id="item-search" className="form-control"

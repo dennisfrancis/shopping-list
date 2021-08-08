@@ -1,0 +1,12 @@
+#new-item-list-wrapper {
+    margin-left: 20px;
+    width: 100%;
+    max-width: 400px;
+}
+
+@media only screen and (max-width: 768px) {
+    #new-item-list-wrapper {
+        margin-top: 20px;
+        width: 90%;
+    }
+}

@@ -3,6 +3,8 @@ import { Item, ItemStatesAndSetters } from '../types/item';
 import { ItemDisplay } from '../components/ItemDisplay';
 import { StorageContext } from '../contexts/storage';
 
+import '../styles/newitemlist.css';
+
 const itemListToText = (list: Item[]): string => {
     let itemsText: string[] = [`${list[0].date.toLocaleDateString()}`, `${list.length} items`, ''];
     list.forEach((item, index) => {
@@ -90,7 +92,7 @@ export function NewItemList(props: {
     };
 
     return (
-        <div style={{marginLeft: 20, width: '100%', maxWidth: 400}}>
+        <div id="new-item-list-wrapper">
             <p>Shopping list({props.list.length})</p>
             <ItemList list={props.list} newItemStatesAndSetters={props.newItemStatesAndSetters}
                 removeItem={props.removeItem}/>
