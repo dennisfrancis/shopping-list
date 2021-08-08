@@ -132,7 +132,7 @@ export function ItemControls(props: ItemControlProps) {
                     min={1}
                     required
                     onChange={handleQtyChange}
-                    value={quantity}></input>
+                    value={quantity === 0 ? '' : (quantity + '')}></input>
             </div>
 
             <div className="mb-3">
