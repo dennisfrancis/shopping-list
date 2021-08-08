@@ -22,4 +22,25 @@
         background: #99ccff;
         border-radius: 10px;
     }
+
+    .bottom-border-only {
+        border-radius: 0;
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        border-bottom: 1px solid black !important;
+        background: transparent !important;
+        margin-bottom: 15px;
+    }
+
+    .bottom-border-only:focus {
+        outline: none;
+        box-shadow: none;
+    }
+
+    .form-label {
+        color:black !important;
+        letter-spacing: 3px !important;
+        margin-bottom: 15px;
+    }
 }

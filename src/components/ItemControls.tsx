@@ -112,7 +112,7 @@ export function ItemControls(props: ItemControlProps) {
         <form id="item-controls">
             <div className="mb-3">
                 <label htmlFor="item-search" className="form-label">Item name</label>
-                <input type="search" id="item-search" className="form-control"
+                <input type="search" id="item-search" className="form-control bottom-border-only"
                     list="next-item-list"
                     aria-label="Search through master list"
                     onChange={handleItemNameChange}
@@ -126,7 +126,7 @@ export function ItemControls(props: ItemControlProps) {
 
             <div className="mb-3">
                 <label htmlFor="qty-input" className="form-label">Quantity</label>
-                <input type="number" className="form-control"
+                <input type="number" className="form-control bottom-border-only"
                     id="qty-input"
                     aria-label="Quantity"
                     min={1}
@@ -137,7 +137,7 @@ export function ItemControls(props: ItemControlProps) {
 
             <div className="mb-3">
                 <label htmlFor="unit-input" className="form-label">Unit</label>
-                <input type="text" className="form-control"
+                <input type="text" className="form-control bottom-border-only"
                     id="unit-input"
                     list="unit-list"
                     aria-label="Unit"
@@ -152,7 +152,7 @@ export function ItemControls(props: ItemControlProps) {
 
             <div className="mb-3">
                 <label htmlFor="comments-input" className="form-label">Comments</label>
-                <input type="text" className="form-control"
+                <input type="text" className="form-control bottom-border-only"
                     id="comments-input"
                     aria-label="Comments"
                     onChange={handleCommentsChange}
