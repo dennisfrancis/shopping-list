@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  BrowserRouter as Router,
+  BrowserRouter,
   Switch,
   Route,
   Link
@@ -107,7 +107,7 @@ function App() {
   });
 
   return (
-    <Router>
+    <BrowserRouter basename="/shopping-list">
       <div>
         <nav>
           <ul className="nav">
@@ -142,7 +142,7 @@ function App() {
           </Switch>
         </StorageProvider>
       </div>
-    </Router>
+    </BrowserRouter>
   );
 }
 
