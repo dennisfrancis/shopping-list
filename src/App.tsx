@@ -14,7 +14,7 @@ import { useEffect } from "react";
 
 import { NewList } from './pages/NewList';
 import { PreviousLists } from  './pages/PreviousLists';
-import UserData from './pages/UserData';
+import Settings from './pages/Settings';
 import { openDb } from './storage/storageDefs';
 import { StorageType, StorageProvider } from './contexts/storage';
 
@@ -118,7 +118,7 @@ function App() {
               <Link to="/previous" className="nav-link">Previous lists</Link>
             </li>
             <li className="nav-item">
-              <Link to="/userdata" className="nav-link">User data</Link>
+              <Link to="/settings" className="nav-link">Settings</Link>
             </li>
           </ul>
         </nav>
@@ -127,8 +127,8 @@ function App() {
           {/* A <Switch> looks through its children <Route>s and
               renders the first one that matches the current URL. */}
           <Switch>
-            <Route path="/userdata">
-              <UserData />
+            <Route path="/settings">
+              <Settings />
             </Route>
             <Route path="/previous">
                 <PreviousLists dateMap={dateMap}/>
