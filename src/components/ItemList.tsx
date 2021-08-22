@@ -6,7 +6,9 @@ import { StorageContext } from '../contexts/storage';
 import '../styles/newitemlist.css';
 
 const itemListToText = (list: Item[]): string => {
-    let itemsText: string[] = [`${list[0].date.toLocaleDateString()}`, `${list.length} items`, ''];
+    let message = window.localStorage.getItem('settings_message');
+    let itemsText: string[] = !message ? [`${list[0].date.toLocaleDateString()}`, `${list.length} items`, ''] :
+        [message, ''];
     list.forEach((item, index) => {
         let commentString = item.comment ? ` (${item.comment})` : '';
         itemsText.push(`${index + 1}. ${item.name}${commentString} : ${item.quantity} ${item.unit}`);
