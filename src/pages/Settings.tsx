@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { StorageContext } from "../contexts/storage";
 
 import '../styles/settings.css'
 
 function Settings() {
     let [name, setName] = useState(window.localStorage.getItem('settings_name'));
     let [message, setMessage] = useState(window.localStorage.getItem('settings_message'));
+    const storage = useContext(StorageContext);
 
     function handleNameChange(e: React.FormEvent<HTMLInputElement>) {
         setName(e.currentTarget.value)
@@ -29,6 +31,16 @@ function Settings() {
         window.localStorage.removeItem('settings_message');
         setName('');
         setMessage('');
+    }
+
+    function handleExport() {
+        storage.exportToJSONText().then(function (text) {
+            let a = document.createElement("a");
+            let file = new Blob([text], {type: 'text/plain'});
+            a.href = URL.createObjectURL(file);
+            a.download = 'shopping-list-export-' + (new Date()).toLocaleDateString() + '.json';
+            a.click();
+        });
     }
 
     return (
@@ -58,6 +70,9 @@ function Settings() {
                 <input type="button" value="Clear" className="btn btn-danger"
                     onClick={handleClear} style={{flexGrow: 0.40}}></input>
             </div>
+            <br></br>
+            <input type="button" value={"Export"} className="btn btn-primary"
+                    onClick={handleExport}></input>
         </form>
     );
 }
