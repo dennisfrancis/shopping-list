@@ -1,4 +1,4 @@
-import { Item, cloneItem, BooleanNumber } from '../types/item';
+import { Item, cloneItem, BooleanNumber, JSONRepresentationType, getItemFromObject, StorageMin } from '../types/item';
 
 const DB_NAME = 'shopping-list-app-db';
 const DB_VERSION = 3;
@@ -215,6 +215,63 @@ export class ShoppingDatabase {
                 });
             }); // catch is not necessary, it will reject in transaction.onerror().
         });
+    }
+
+    public async exportToJSON(localStorage: StorageMin = window.localStorage) {
+        try {
+            const items = await this.getAllItems();
+            return {
+                items: items,
+                name: localStorage.getItem('settings_name') || '',
+                message: localStorage.getItem('settings_message') || '',
+            };
+        } catch (e) {
+            return {
+                items: [],
+                name: '',
+                message: '',
+            };
+        }
+    }
+
+    public async importFromJSON(jsonString: string,
+        keyRangeOnly: (x: any) => IDBKeyRange = IDBKeyRange.only,
+        localStorage: StorageMin = window.localStorage) {
+
+        const obj = JSON.parse(jsonString);
+        if (typeof obj !== 'object')
+            return false;
+
+        if (!Array.isArray(obj.items))
+            return false;
+
+        let items: Item[] = [];
+        (obj.items as any[]).forEach(itemObj => {
+            const item = getItemFromObject(itemObj);
+            if (item)
+                items.push(item);
+        });
+
+        const repr: JSONRepresentationType = {
+            items: items,
+            name: typeof obj.name === 'string' ? obj.name : '',
+            message: typeof obj.message === 'string' ? obj.message : '',
+        }
+
+        await this.clearAll();
+        for (let i = 0; i < items.length; ++i) {
+            try {
+                await this.addUpdateItem(items[i], keyRangeOnly);
+            } catch (e) {
+                console.debug('Error adding item : ' + items[i] + ' err = ' + e);
+                return false;
+            }
+        }
+
+        localStorage.setItem('settings_name', repr.name);
+        localStorage.setItem('settings_message', repr.message);
+
+        return true;
     }
 }
 

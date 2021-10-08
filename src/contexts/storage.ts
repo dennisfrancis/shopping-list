@@ -67,6 +67,17 @@ export class StorageType {
 
         return this.db.saveUnsaved(saveDate);
     }
+
+    public async exportToJSONText() {
+        let obj;
+        try {
+            obj = await this.db?.exportToJSON();
+        } catch (e) {
+            return '';
+        }
+
+        return JSON.stringify(obj);
+    }
 };
 
 export const StorageContext = React.createContext({} as StorageType);

@@ -8,6 +8,30 @@ declare class FDBKeyRangeWithOnly extends IDBKeyRange {
 let fakeIndexedDB = require('fake-indexeddb/build/fakeIndexedDB').default as IDBFactory;
 let FDBKeyRange = require('fake-indexeddb/build/FDBKeyRange').default as FDBKeyRangeWithOnly;
 
+class LocalStorageMock {
+    private store: Map<string, string>;
+
+    constructor() {
+        this.store = new Map<string, string>();
+    }
+
+    clear() {
+        this.store.clear();
+    }
+
+    getItem(key: string) {
+        return this.store.get(key) || null;
+    }
+
+    setItem(key: string, value: string) {
+        this.store.set(key, value);
+    }
+
+    removeItem(key: string) {
+        this.store.delete(key);
+    }
+}
+
 afterEach(async () => {
     const db = await openDb(fakeIndexedDB, true /* beSilent */);
     expect(db).toBeTruthy();
@@ -342,4 +366,75 @@ test('save unsaved items in db list', async () => {
         expect(item.date).toEqual(curItems[index].date);
         expect(item.saved).toEqual(curItems[index].saved);
     });
+});
+
+test('export import test', async () => {
+    const db = await openDb(fakeIndexedDB, true /* beSilent */);
+    expect(db).toBeTruthy();
+    const date = new Date();
+    let items: Item[] = [
+        {
+            name: 'Cabbage',
+            quantity: 1,
+            unit: 'Kg',
+            comment: '',
+            saved: 0,
+            date
+        },
+        {
+            name: 'Rice powder',
+            quantity: 1,
+            unit: 'Packet(s)',
+            comment: '500gm',
+            saved: 1,
+            date
+        },
+        {
+            name: 'Chicken',
+            quantity: 1,
+            unit: 'Kg',
+            comment: 'curry cut',
+            saved: 0,
+            date
+        },
+        {
+            name: 'Garlic',
+            quantity: 250,
+            unit: 'gm',
+            comment: '',
+            saved: 1,
+            date
+        },
+    ];
+
+    items.forEach(async item => {
+        await db.addUpdateItem(item, FDBKeyRange.only);
+    });
+
+    let localStorage = new LocalStorageMock;
+    localStorage.setItem('settings_name', 'Amos');
+    localStorage.setItem('settings_message', 'Address: 32P1 seller av. 34571');
+
+    let localStorageAfterImport = new LocalStorageMock;
+
+    const repr = await db.exportToJSON(localStorage);
+    const ok = await db.importFromJSON(JSON.stringify(repr), FDBKeyRange.only, localStorageAfterImport);
+
+    expect(ok).toBeTruthy();
+
+    const list = await db.getAllItems() as Item[];
+
+    expect(list).toHaveLength(items.length);
+
+    list.forEach((item, index) => {
+        expect(item.name).toEqual(items[index].name);
+        expect(item.quantity).toEqual(items[index].quantity);
+        expect(item.unit).toEqual(items[index].unit);
+        expect(item.comment).toEqual(items[index].comment);
+        expect(item.date).toEqual(items[index].date);
+        expect(item.saved).toEqual(items[index].saved);
+    });
+
+    expect(localStorage.getItem('settings_name')).toEqual(localStorageAfterImport.getItem('settings_name'));
+    expect(localStorage.getItem('settings_message')).toEqual(localStorageAfterImport.getItem('settings_message'));
 });

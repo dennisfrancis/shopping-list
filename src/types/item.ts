@@ -34,3 +34,38 @@ export function cloneItem(item: Item): Item {
         saved: item.saved
     };
 }
+
+export type JSONRepresentationType = {
+    items: Item[];
+    name: string;
+    message: string;
+}
+
+export function getItemFromObject(obj: any): Item | undefined {
+    if (typeof obj !== 'object')
+        return undefined;
+
+    if (typeof obj.name !== 'string' ||
+        typeof obj.quantity !== 'number' ||
+        typeof obj.unit !== 'string' ||
+        typeof obj.comment !== 'string' ||
+        typeof obj.date !== 'string' ||
+        typeof obj.saved !== 'number')
+        return undefined;
+
+    return {
+        name: obj.name,
+        quantity: obj.quantity,
+        unit: obj.unit,
+        comment: obj.comment,
+        date: new Date(obj.date),
+        saved: obj.saved,
+    }
+}
+
+export interface StorageMin {
+    clear(): void;
+    getItem(key: string): string | null;
+    removeItem(key: string): void;
+    setItem(key: string, value: string): void;
+}
