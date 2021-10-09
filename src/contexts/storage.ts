@@ -78,6 +78,17 @@ export class StorageType {
 
         return JSON.stringify(obj);
     }
+
+    public async importFromJSONText(jsonText: string) {
+        let res = false;
+        try {
+            res = !! await this.db?.importFromJSON(jsonText);
+        } catch (e) {
+            return false;
+        }
+
+        return res;
+    }
 };
 
 export const StorageContext = React.createContext({} as StorageType);

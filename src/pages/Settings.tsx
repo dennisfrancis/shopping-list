@@ -6,6 +6,8 @@ import '../styles/settings.css'
 function Settings() {
     let [name, setName] = useState(window.localStorage.getItem('settings_name'));
     let [message, setMessage] = useState(window.localStorage.getItem('settings_message'));
+    let [importStatus, setImportStatus] = useState(0);
+
     const storage = useContext(StorageContext);
 
     function handleNameChange(e: React.FormEvent<HTMLInputElement>) {
@@ -43,8 +45,28 @@ function Settings() {
         });
     }
 
+    function handleImport() {
+        let inp = document.getElementById('importFile');
+        inp?.click();
+    }
+
+    function handleImportFile() {
+        let inp = document.getElementById('importFile') as HTMLInputElement;
+        if (!inp || !inp.files || !inp.files.length)
+            return;
+        inp.files[0].text().then(function (jsonText) {
+            return storage.importFromJSONText(jsonText);
+        }).then((res: boolean) => {
+            setImportStatus(res ? 1 : -1);
+            setTimeout(() => {
+                setImportStatus(0);
+            }, 1000);
+            return true;
+        });
+    }
+
     return (
-        <form id="settings-form">
+        <form id="settings-form" style={{margin: 20}}>
             <div className="mb-3">
                 <label htmlFor="settings-name" className="form-label">Name</label>
                 <input type="text" id="settings-name" className="form-control"
@@ -65,14 +87,21 @@ function Settings() {
             </div>
             <br></br>
             <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
-                <input type="submit" value={"Save"} className="btn btn-primary"
+                <input type="submit" value={"Save"} className="btn btn-success"
                     onClick={handleSave} style={{flexGrow: 0.40}}></input>
                 <input type="button" value="Clear" className="btn btn-danger"
                     onClick={handleClear} style={{flexGrow: 0.40}}></input>
             </div>
             <br></br>
-            <input type="button" value={"Export"} className="btn btn-primary"
-                    onClick={handleExport}></input>
+            <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
+                <input type="button" value={"Export"} className="btn btn-primary"
+                        onClick={handleExport} style={{flexGrow: 0.40}}></input>
+                <input type="button" value={importStatus === 0 ? "Import" : (importStatus === -1 ? "Import failed!" : "Import successful!")}
+                        className="btn btn-primary"
+                        onClick={handleImport} style={{flexGrow: 0.40}}></input>
+                <input type="file" id="importFile" onChange={handleImportFile}
+                    style={{display: "none"}} accept=".json"></input>
+            </div>
         </form>
     );
 }
