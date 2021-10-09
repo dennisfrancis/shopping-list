@@ -3,7 +3,9 @@ import { StorageContext } from "../contexts/storage";
 
 import '../styles/settings.css'
 
-function Settings() {
+function Settings(props: {
+    setRunFetchEffect: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
     let [name, setName] = useState(window.localStorage.getItem('settings_name'));
     let [message, setMessage] = useState(window.localStorage.getItem('settings_message'));
     let [importStatus, setImportStatus] = useState(0);
@@ -57,12 +59,21 @@ function Settings() {
         inp.files[0].text().then(function (jsonText) {
             return storage.importFromJSONText(jsonText);
         }).then((res: boolean) => {
+            if (res) {
+                onLocalStorageChanged();
+                props.setRunFetchEffect(true);
+            }
             setImportStatus(res ? 1 : -1);
             setTimeout(() => {
                 setImportStatus(0);
             }, 1000);
             return true;
         });
+    }
+
+    function onLocalStorageChanged() {
+        setName(window.localStorage.getItem('settings_name'));
+        setMessage(window.localStorage.getItem('settings_message'))
     }
 
     return (

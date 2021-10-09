@@ -128,7 +128,7 @@ function App() {
               renders the first one that matches the current URL. */}
           <Switch>
             <Route path="/settings">
-              <Settings />
+              <Settings setRunFetchEffect={setRunFetchEffect}/>
             </Route>
             <Route path="/previous">
                 <PreviousLists dateMap={dateMap}/>
