@@ -411,11 +411,11 @@ test('export import test', async () => {
         await db.addUpdateItem(item, FDBKeyRange.only);
     });
 
-    let localStorage = new LocalStorageMock;
+    let localStorage = new LocalStorageMock();
     localStorage.setItem('settings_name', 'Amos');
     localStorage.setItem('settings_message', 'Address: 32P1 seller av. 34571');
 
-    let localStorageAfterImport = new LocalStorageMock;
+    let localStorageAfterImport = new LocalStorageMock();
 
     const repr = await db.exportToJSON(localStorage);
     const ok = await db.importFromJSON(JSON.stringify(repr), FDBKeyRange.only, localStorageAfterImport);
