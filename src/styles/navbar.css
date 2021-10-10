@@ -1,0 +1,19 @@
+nav ul.nav {
+    justify-content: center;
+}
+
+nav {
+    background-color: rgb(7, 7, 71);
+}
+
+.nav-link {
+    color: white;
+}
+
+.nav-link:hover {
+    color: rgb(7, 7, 71);
+}
+
+.nav-item:hover {
+    background-color: white;
+}
