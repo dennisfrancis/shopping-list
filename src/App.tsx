@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 
 import './bootstrap.min.css';
+import './styles/navbar.css';
 import { useState } from "react";
 import { Item, ItemStatesAndSetters } from './types/item';
 import { useEffect } from "react";
@@ -122,6 +123,7 @@ function App() {
             </li>
           </ul>
         </nav>
+        <br></br>
 
         <StorageProvider value={storage}>
           {/* A <Switch> looks through its children <Route>s and
