@@ -17,12 +17,13 @@ export function PreviousLists(props: {
             <p>Previous shopping lists({props.dateMap.size})</p>
             <div id="previous-lists-wrapper">
                 <div>
-                    <ol id="previous-lists" className="list-group list-group-numbered">
+                    <ol id="previous-lists" className="list-group list-group-flush list-group-numbered">
                         { dateList.map(date =>
                             <ListDisplay date={date} items={props.dateMap.get(date) || []}
                                 key={date} selected={date === selectedDate} setSelectedDate={setSelectedDate} readOnly={true}/> )}
                     </ol>
                 </div>
+                <div className="vertsep"></div>
                 <div id="previous-list-one">
                     { (selectedDate !== 0 && selectedItems !== undefined) && <ItemList list={selectedItems} copyList={true}/> }
                 </div>

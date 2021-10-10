@@ -38,7 +38,7 @@ export function ItemList(props: {
 
     return (
         <div>
-            <ol className="list-group list-group-numbered" style={{maxHeight: "80vh", overflowY:"auto"}}>
+            <ol className="list-group list-group-flush list-group-numbered" style={{maxHeight: "80vh", overflowY:"auto"}}>
                 {props.list.map(item =>
                     <ItemDisplay item={item} key={item.name}
                         newItemStatesAndSetters={props.newItemStatesAndSetters}

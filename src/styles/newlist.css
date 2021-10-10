@@ -5,6 +5,13 @@
     justify-content: center;
 }
 
+.vertsep {
+    background-color: rgb(7, 7, 71);
+    width: 1px;
+    height: 80vh;
+    margin: 0 50px 0 50px;
+}
+
 @media only screen and (max-width: 768px) {
     #newlist-wrapper {
         display: flex;

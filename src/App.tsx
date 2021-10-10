@@ -9,6 +9,7 @@ import {
 import './bootstrap.min.css';
 import './styles/navbar.css';
 import './styles/buttons.css';
+import './styles/list.css';
 import { useState } from "react";
 import { Item, ItemStatesAndSetters } from './types/item';
 import { useEffect } from "react";
