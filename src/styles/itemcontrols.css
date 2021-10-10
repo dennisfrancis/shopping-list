@@ -50,7 +50,5 @@ input[type=number], input[type=search] {
         width: 90%;
         margin-left: 15px;
         padding: 25px;
-        background: #99ccff;
-        border-radius: 10px;
     }
 }

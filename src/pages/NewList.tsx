@@ -49,7 +49,7 @@ export function NewList(props: {
             <ItemControls masterList={props.masterList} setMasterList={props.setMasterList}
                 newList={props.newList} setNewList={props.setNewList}
                 masterItems={props.masterItems} newItemStatesAndSetters={props.newItemStatesAndSetters}/>
-            <div className="vertsep"></div>
+            <div className="sepline"></div>
             <NewItemList list={props.newList} newItemStatesAndSetters={props.newItemStatesAndSetters}
                 removeItem={removeItem} setRunFetchEffect={props.setRunFetchEffect}/>
             {debugMode && <DebugItemLists masterList={props.masterList} newList={props.newList} />}
