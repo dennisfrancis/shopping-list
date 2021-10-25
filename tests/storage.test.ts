@@ -406,7 +406,7 @@ test('export import test', async () => {
             comment: '',
             saved: 0,
             date,
-            category,
+            category: 'Vegetables',
         },
         {
             name: 'Rice powder',
@@ -433,7 +433,7 @@ test('export import test', async () => {
             comment: '',
             saved: 1,
             date,
-            category,
+            category: 'Vegetables',
         },
     ];
 
@@ -463,6 +463,7 @@ test('export import test', async () => {
         expect(item.comment).toEqual(items[index].comment);
         expect(item.date).toEqual(items[index].date);
         expect(item.saved).toEqual(items[index].saved);
+        expect(item.category).toEqual(items[index].category)
     });
 
     expect(localStorage.getItem('settings_name')).toEqual(localStorageAfterImport.getItem('settings_name'));
