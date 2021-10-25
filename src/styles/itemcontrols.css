@@ -51,4 +51,11 @@ input[type=number], input[type=search] {
         margin-left: 15px;
         padding: 25px;
     }
+
+    .form-label {
+        color:black !important;
+        letter-spacing: 1px !important;
+        font-size: small;
+        margin-bottom: 0px;
+    }
 }
