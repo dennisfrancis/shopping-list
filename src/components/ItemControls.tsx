@@ -28,7 +28,9 @@ export function ItemControls(props: ItemControlProps) {
         setComment,
         existing,
         setExisting,
-        date
+        date,
+        category,
+        setCategory,
     } = props.newItemStatesAndSetters;
 
     let nextList:string[] = [];
@@ -43,11 +45,11 @@ export function ItemControls(props: ItemControlProps) {
         if (!newItemName || !quantity || !unit)
             return;
 
-        storage.addUpdate({name: newItemName, quantity, unit, comment, saved: 0, date});
+        storage.addUpdate({name: newItemName, quantity, unit, comment, saved: 0, date, category});
         props.setNewList(currList => {
             let matchItemIndex = currList.findIndex((item) => item.name === newItemName);
             if (matchItemIndex === -1) {
-                return [...currList, {name: newItemName, quantity, unit, comment, saved: 0, date}];
+                return [...currList, {name: newItemName, quantity, unit, comment, saved: 0, date, category}];
             }
 
             let listCopy = [...currList];
@@ -55,6 +57,7 @@ export function ItemControls(props: ItemControlProps) {
             matchItem.quantity = quantity;
             matchItem.unit = unit;
             matchItem.comment = comment;
+            matchItem.category = category;
             return listCopy;
         });
 
@@ -70,6 +73,7 @@ export function ItemControls(props: ItemControlProps) {
         setUnit('');
         setComment('');
         setExisting(false);
+        setCategory(undefined);
     }
 
     function handleItemNameChange(e: React.FormEvent<HTMLInputElement>) {
@@ -80,6 +84,7 @@ export function ItemControls(props: ItemControlProps) {
             setUnit(masterItem.unit);
             setUnit(masterItem.unit);
             setComment(masterItem.comment);
+            setCategory(masterItem.category);
         }
         setExisting(props.newList.findIndex((item) => item.name === e.currentTarget.value) !== -1);
     }
@@ -106,6 +111,11 @@ export function ItemControls(props: ItemControlProps) {
         setUnit('');
         setComment('');
         setExisting(false);
+        setCategory(undefined);
+    }
+
+    function handleCategoryChange(e: React.FormEvent<HTMLInputElement>) {
+        setCategory(e.currentTarget.value === '' ? undefined : e.currentTarget.value);
     }
 
     return (
@@ -158,6 +168,18 @@ export function ItemControls(props: ItemControlProps) {
                     onChange={handleCommentsChange}
                     value={comment}></input>
             </div>
+
+            <div className="mb-3">
+                <label htmlFor="category-input" className="form-label">Category</label>
+                <input type="text" className="form-control bottom-border-only"
+                    id="category-input"
+                    list="category-list"
+                    aria-label="Unit"
+                    required
+                    onChange={handleCategoryChange}
+                    value={category === undefined ? '' : category}></input>
+            </div>
+
             <br></br>
             <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
                 <input type="submit" value={existing ? "Modify" : "Add"} className="btn btn-primary"

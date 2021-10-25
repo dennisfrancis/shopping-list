@@ -54,6 +54,7 @@ test('items must persist in store', async () => {
     const db = await openDb(fakeIndexedDB, true /* beSilent */);
     expect(db).toBeTruthy();
     const date = new Date();
+    const category = undefined;
     const items: Item[] = [
         {
             name: 'Cabbage',
@@ -70,7 +71,8 @@ test('items must persist in store', async () => {
             unit: 'Kg',
             comment: 'curry cut',
             saved: 0,
-            date
+            date,
+            category
         }
     ];
 
@@ -96,6 +98,7 @@ test('unsaved list', async () => {
     const db = await openDb(fakeIndexedDB, true /* beSilent */);
     expect(db).toBeTruthy();
     const date = new Date();
+    const category = undefined;
     const itemsSaved: Item[] = [
         {
             name: 'Cabbage',
@@ -103,7 +106,8 @@ test('unsaved list', async () => {
             unit: 'Kg',
             comment: '',
             saved: 1,
-            date
+            date,
+            category,
         },
         {
             name: 'Chicken',
@@ -111,7 +115,8 @@ test('unsaved list', async () => {
             unit: 'Kg',
             comment: 'curry cut',
             saved: 1,
-            date
+            date,
+            category,
         }
     ];
 
@@ -122,7 +127,8 @@ test('unsaved list', async () => {
             unit: 'Kg',
             comment: '',
             saved: 0,
-            date
+            date,
+            category,
         },
         {
             name: 'Eggs',
@@ -130,7 +136,8 @@ test('unsaved list', async () => {
             unit: 'No',
             comment: '',
             saved: 0,
-            date
+            date,
+            category,
         }
     ];
 
@@ -159,6 +166,7 @@ test('change item properties in db list', async () => {
     const db = await openDb(fakeIndexedDB, true /* beSilent */);
     expect(db).toBeTruthy();
     const date = new Date();
+    const category = undefined;
     const items: Item[] = [
         {
             name: 'Cabbage',
@@ -166,7 +174,8 @@ test('change item properties in db list', async () => {
             unit: 'Kg',
             comment: '',
             saved: 0,
-            date
+            date,
+            category,
         },
         {
             name: 'Chicken',
@@ -174,7 +183,8 @@ test('change item properties in db list', async () => {
             unit: 'Kg',
             comment: 'curry cut',
             saved: 0,
-            date
+            date,
+            category,
         }
     ];
 
@@ -202,6 +212,7 @@ test('delete item in db list', async () => {
     const db = await openDb(fakeIndexedDB, true /* beSilent */);
     expect(db).toBeTruthy();
     const date = new Date();
+    const category = undefined;
     let items: Item[] = [
         {
             name: 'Cabbage',
@@ -209,7 +220,8 @@ test('delete item in db list', async () => {
             unit: 'Kg',
             comment: '',
             saved: 0,
-            date
+            date,
+            category,
         },
         {
             name: 'Chicken',
@@ -217,7 +229,8 @@ test('delete item in db list', async () => {
             unit: 'Kg',
             comment: 'curry cut',
             saved: 0,
-            date
+            date,
+            category,
         }
     ];
 
@@ -245,6 +258,7 @@ test('clear unsaved items in db list', async () => {
     const db = await openDb(fakeIndexedDB, true /* beSilent */);
     expect(db).toBeTruthy();
     const date = new Date();
+    const category = undefined;
     let items: Item[] = [
         {
             name: 'Cabbage',
@@ -252,7 +266,8 @@ test('clear unsaved items in db list', async () => {
             unit: 'Kg',
             comment: '',
             saved: 0,
-            date
+            date,
+            category,
         },
         {
             name: 'Rice powder',
@@ -260,7 +275,8 @@ test('clear unsaved items in db list', async () => {
             unit: 'Packet(s)',
             comment: '500gm',
             saved: 1,
-            date
+            date,
+            category,
         },
         {
             name: 'Chicken',
@@ -268,7 +284,8 @@ test('clear unsaved items in db list', async () => {
             unit: 'Kg',
             comment: 'curry cut',
             saved: 0,
-            date
+            date,
+            category,
         },
         {
             name: 'Garlic',
@@ -276,7 +293,8 @@ test('clear unsaved items in db list', async () => {
             unit: 'gm',
             comment: '',
             saved: 1,
-            date
+            date,
+            category,
         },
     ];
 
@@ -304,6 +322,7 @@ test('save unsaved items in db list', async () => {
     const db = await openDb(fakeIndexedDB, true /* beSilent */);
     expect(db).toBeTruthy();
     const date = new Date();
+    const category = undefined;
     let items: Item[] = [
         {
             name: 'Cabbage',
@@ -311,7 +330,8 @@ test('save unsaved items in db list', async () => {
             unit: 'Kg',
             comment: '',
             saved: 0,
-            date
+            date,
+            category,
         },
         {
             name: 'Rice powder',
@@ -319,7 +339,8 @@ test('save unsaved items in db list', async () => {
             unit: 'Packet(s)',
             comment: '500gm',
             saved: 1,
-            date
+            date,
+            category,
         },
         {
             name: 'Chicken',
@@ -327,7 +348,8 @@ test('save unsaved items in db list', async () => {
             unit: 'Kg',
             comment: 'curry cut',
             saved: 0,
-            date
+            date,
+            category,
         },
         {
             name: 'Garlic',
@@ -335,7 +357,8 @@ test('save unsaved items in db list', async () => {
             unit: 'gm',
             comment: '',
             saved: 1,
-            date
+            date,
+            category,
         },
     ];
 
@@ -374,6 +397,7 @@ test('export import test', async () => {
     const db = await openDb(fakeIndexedDB, true /* beSilent */);
     expect(db).toBeTruthy();
     const date = new Date();
+    const category = undefined;
     let items: Item[] = [
         {
             name: 'Cabbage',
@@ -381,7 +405,8 @@ test('export import test', async () => {
             unit: 'Kg',
             comment: '',
             saved: 0,
-            date
+            date,
+            category,
         },
         {
             name: 'Rice powder',
@@ -389,7 +414,8 @@ test('export import test', async () => {
             unit: 'Packet(s)',
             comment: '500gm',
             saved: 1,
-            date
+            date,
+            category,
         },
         {
             name: 'Chicken',
@@ -397,7 +423,8 @@ test('export import test', async () => {
             unit: 'Kg',
             comment: 'curry cut',
             saved: 0,
-            date
+            date,
+            category,
         },
         {
             name: 'Garlic',
@@ -405,7 +432,8 @@ test('export import test', async () => {
             unit: 'gm',
             comment: '',
             saved: 1,
-            date
+            date,
+            category,
         },
     ];
 

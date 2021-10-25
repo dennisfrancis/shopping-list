@@ -41,6 +41,7 @@ function App() {
   let [unit, setUnit] = useState('');
   let [comment, setComment] = useState('');
   let [date, setDate] = useState(new Date());
+  let [category, setCategory] = useState(undefined as (string | undefined));
   let [existing, setExisting] = useState(false);
   let [runFetchEffect, setRunFetchEffect] = useState(false);
   let itemStatesAndSetters: ItemStatesAndSetters = {
@@ -55,7 +56,9 @@ function App() {
       existing,
       setExisting,
       date,
-      setDate
+      setDate,
+      category,
+      setCategory,
   };
 
   // fetch initial state from DB.

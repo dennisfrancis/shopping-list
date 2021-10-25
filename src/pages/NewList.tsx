@@ -25,7 +25,8 @@ export function NewList(props: {
         setQuantity,
         setUnit,
         setComment,
-        setExisting
+        setExisting,
+        setCategory,
     } = props.newItemStatesAndSetters;
 
     const removeItem = (item: Item) => {
@@ -39,6 +40,7 @@ export function NewList(props: {
             setUnit('');
             setComment('');
             setExisting(false);
+            setCategory(undefined);
         }
     };
 

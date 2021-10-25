@@ -7,7 +7,7 @@ export type Item = {
     comment: string;
     date: Date;
     saved: BooleanNumber;
-    category?: string;
+    category: string | undefined;
 };
 
 export type ItemStatesAndSetters = {
@@ -23,8 +23,8 @@ export type ItemStatesAndSetters = {
     setDate: (date: Date) => void;
     existing: boolean;
     setExisting: (val: boolean) => void;
-    category: string;
-    setCategory: (category: string) => void;
+    category: string | undefined;
+    setCategory: (category: string | undefined) => void;
 }
 
 export function cloneItem(item: Item): Item {

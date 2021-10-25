@@ -9,9 +9,30 @@ const itemListToText = (list: Item[]): string => {
     let message = window.localStorage.getItem('settings_message');
     let itemsText: string[] = !message ? [`${list[0].date.toLocaleDateString()}`, `${list.length} items`, ''] :
         [message, ''];
-    list.forEach((item, index) => {
-        let commentString = item.comment ? ` (${item.comment})` : '';
-        itemsText.push(`${index + 1}. ${item.name}${commentString} : ${item.quantity} ${item.unit}`);
+
+    let sublists = new Map<string, Item[]>();
+    const cat2String = (category: string | undefined) => category === undefined ? '' : category;
+    list.forEach(item => {
+        const cat = cat2String(item.category);
+        const sub = sublists.get(cat);
+        if (sub)
+            sub.push(item);
+        else
+            sublists.set(cat, [item]);
+    });
+
+    sublists.forEach((items: Item[], cat: string) => {
+        if (cat === '') {
+            itemsText.push('');
+        } else {
+            itemsText.push('');
+            itemsText.push(cat);
+            itemsText.push('='.repeat(cat.length));
+        }
+        items.forEach((item, index) => {
+            let commentString = item.comment ? ` (${item.comment})` : '';
+            itemsText.push(`${index + 1}. ${item.name}${commentString} : ${item.quantity} ${item.unit}`);
+        });
     });
 
     return itemsText.join('\n');
@@ -68,6 +89,7 @@ export function NewItemList(props: {
         props.newItemStatesAndSetters.setUnit('');
         props.newItemStatesAndSetters.setComment('');
         props.newItemStatesAndSetters.setExisting(false);
+        props.newItemStatesAndSetters.setCategory(undefined);
     };
 
     const handleClear = () => {
