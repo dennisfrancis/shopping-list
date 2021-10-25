@@ -21,7 +21,10 @@ const itemListToText = (list: Item[]): string => {
             sublists.set(cat, [item]);
     });
 
-    sublists.forEach((items: Item[], cat: string) => {
+    let categories = [...sublists.keys()];
+    categories.sort();
+
+    categories.forEach((cat: string) => {
         if (cat === '') {
             itemsText.push('');
         } else {
@@ -29,6 +32,8 @@ const itemListToText = (list: Item[]): string => {
             itemsText.push(cat);
             itemsText.push('='.repeat(cat.length));
         }
+
+        const items = sublists.get(cat) as Item[];
         items.forEach((item, index) => {
             let commentString = item.comment ? ` (${item.comment})` : '';
             itemsText.push(`${index + 1}. ${item.name}${commentString} : ${item.quantity} ${item.unit}`);
