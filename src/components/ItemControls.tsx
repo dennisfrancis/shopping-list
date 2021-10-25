@@ -1,6 +1,6 @@
 import React from "react";
 import { useContext } from "react";
-import { Units } from "../consts/itemConsts";
+import { Categories, Units } from "../consts/itemConsts";
 import { StorageContext } from "../contexts/storage";
 import { Item, ItemStatesAndSetters } from '../types/item';
 
@@ -179,6 +179,10 @@ export function ItemControls(props: ItemControlProps) {
                     onChange={handleCategoryChange}
                     value={category === undefined ? '' : category}></input>
             </div>
+
+            <datalist id="category-list">
+                {[...Categories].map(cat => <option key={cat} value={cat}/>)}
+            </datalist>
 
             <br></br>
             <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>

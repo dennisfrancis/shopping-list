@@ -4,3 +4,9 @@ export const Units = new Set([
     'Packet(s)',
     'No'
 ]);
+
+export const Categories = new Set([
+    'Vegetables',
+    'Fruits',
+    'Medicines',
+]);
