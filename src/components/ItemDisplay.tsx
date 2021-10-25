@@ -27,7 +27,8 @@ export function ItemDisplay(props: {
         <li className={"list-group-item d-flex justify-content-between align-items-start" + (selected ? " active" : "")}>
             <div className="ms-2 me-auto" style={{width: "100vw"}} onClick={handleItemClick}>
                 <div className="fw-bold" style={{display: "inline"}}>{props.item.name + (props.item.comment ? ' (' + props.item.comment + ')' : '')}</div>
-                <div>{props.item.quantity}&nbsp;{props.item.unit}&nbsp;{ (props.item.category !== undefined) && props.item.category }</div>
+                <div>{props.item.quantity}&nbsp;{props.item.unit}&nbsp;
+                    { (props.item.category !== undefined) && <small style={{fontStyle: "italic", color: "red"}}>{'#' + props.item.category}</small> }</div>
             </div>
             {props.removeItem && <button type="button" className="btn-close" aria-label="Close" onClick={removeItem}></button>}
         </li>
