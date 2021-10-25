@@ -61,7 +61,8 @@ test('items must persist in store', async () => {
             unit: 'Kg',
             comment: '',
             saved: 0,
-            date
+            date,
+            category: 'vegetables',
         },
         {
             name: 'Chicken',
@@ -87,6 +88,7 @@ test('items must persist in store', async () => {
         expect(item.comment).toEqual(items[index].comment);
         expect(item.date).toEqual(items[index].date);
         expect(item.saved).toEqual(items[index].saved);
+        expect(item.category).toEqual(items[index].category);
     });
 });
 

@@ -7,6 +7,7 @@ export type Item = {
     comment: string;
     date: Date;
     saved: BooleanNumber;
+    category?: string;
 };
 
 export type ItemStatesAndSetters = {
@@ -22,6 +23,8 @@ export type ItemStatesAndSetters = {
     setDate: (date: Date) => void;
     existing: boolean;
     setExisting: (val: boolean) => void;
+    category: string;
+    setCategory: (category: string) => void;
 }
 
 export function cloneItem(item: Item): Item {
@@ -31,7 +34,8 @@ export function cloneItem(item: Item): Item {
         unit: item.unit,
         comment: item.comment,
         date: item.date,
-        saved: item.saved
+        saved: item.saved,
+        category: item.category
     };
 }
 
@@ -50,7 +54,8 @@ export function getItemFromObject(obj: any): Item | undefined {
         typeof obj.unit !== 'string' ||
         typeof obj.comment !== 'string' ||
         typeof obj.date !== 'string' ||
-        typeof obj.saved !== 'number')
+        typeof obj.saved !== 'number' ||
+        (typeof obj.category !== 'string' && typeof obj.category !== 'undefined'))
         return undefined;
 
     return {
@@ -60,6 +65,7 @@ export function getItemFromObject(obj: any): Item | undefined {
         comment: obj.comment,
         date: new Date(obj.date),
         saved: obj.saved,
+        category: obj.category,
     }
 }
 
