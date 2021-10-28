@@ -128,6 +128,7 @@ function App() {
             </li>
           </ul>
         </nav>
+        <div className="nav-space"></div>
         <br></br>
 
         <StorageProvider value={storage}>

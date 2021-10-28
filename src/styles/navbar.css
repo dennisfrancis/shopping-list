@@ -4,6 +4,12 @@ nav ul.nav {
 
 nav {
     background-color: rgb(7, 7, 71);
+    position: fixed;
+    width: 100%;
+    z-index: 10;
+}
+.nav-space {
+    height: 5vh;
 }
 
 .nav-link {
