@@ -55,6 +55,7 @@ export function NewList(props: {
             <NewItemList list={props.newList} newItemStatesAndSetters={props.newItemStatesAndSetters}
                 removeItem={removeItem} setRunFetchEffect={props.setRunFetchEffect}/>
             {debugMode && <DebugItemLists masterList={props.masterList} newList={props.newList} />}
+            <br></br>
         </div>
     );
 }

@@ -28,6 +28,7 @@ export function PreviousLists(props: {
                     { (selectedDate !== 0 && selectedItems !== undefined) && <ItemList list={selectedItems} copyList={true}/> }
                 </div>
             </div>
+            <br></br>
         </div>
     );
 }
