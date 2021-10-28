@@ -23,7 +23,7 @@ export function PreviousLists(props: {
                                 key={date} selected={date === selectedDate} setSelectedDate={setSelectedDate} readOnly={true}/> )}
                     </ol>
                 </div>
-                <div className="sepline"></div>
+                { dateList.length !== 0 && <div className="sepline"></div> }
                 <div id="previous-list-one">
                     { (selectedDate !== 0 && selectedItems !== undefined) && <ItemList list={selectedItems} copyList={true}/> }
                 </div>
