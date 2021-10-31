@@ -1,9 +1,9 @@
 import { useContext, useState } from "react";
 import { StorageContext } from "../contexts/storage";
 
-import '../styles/settings.css'
+import '../styles/datapage.css'
 
-function Settings(props: {
+function DataPage(props: {
     setRunFetchEffect: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
     let [name, setName] = useState(window.localStorage.getItem('settings_name'));
@@ -117,4 +117,4 @@ function Settings(props: {
     );
 }
 
-export default Settings;
+export default DataPage;
