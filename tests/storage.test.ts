@@ -393,49 +393,51 @@ test('save unsaved items in db list', async () => {
     });
 });
 
+const dateImpExp = new Date();
+const itemsImpExp: Item[] = [
+    {
+        name: 'Cabbage',
+        quantity: 1,
+        unit: 'Kg',
+        comment: '',
+        saved: 0,
+        date: dateImpExp,
+        category: 'Vegetables',
+    },
+    {
+        name: 'Rice powder',
+        quantity: 1,
+        unit: 'Packet(s)',
+        comment: '500gm',
+        saved: 1,
+        date: dateImpExp,
+        category: undefined,
+    },
+    {
+        name: 'Chicken',
+        quantity: 1,
+        unit: 'Kg',
+        comment: 'curry cut',
+        saved: 0,
+        date: dateImpExp,
+        category: undefined,
+    },
+    {
+        name: 'Garlic',
+        quantity: 250,
+        unit: 'gm',
+        comment: '',
+        saved: 1,
+        date: dateImpExp,
+        category: 'Vegetables',
+    },
+];
+
+
 test('export import test', async () => {
     const db = await openDb(fakeIndexedDB, true /* beSilent */);
     expect(db).toBeTruthy();
-    const date = new Date();
-    const category = undefined;
-    let items: Item[] = [
-        {
-            name: 'Cabbage',
-            quantity: 1,
-            unit: 'Kg',
-            comment: '',
-            saved: 0,
-            date,
-            category: 'Vegetables',
-        },
-        {
-            name: 'Rice powder',
-            quantity: 1,
-            unit: 'Packet(s)',
-            comment: '500gm',
-            saved: 1,
-            date,
-            category,
-        },
-        {
-            name: 'Chicken',
-            quantity: 1,
-            unit: 'Kg',
-            comment: 'curry cut',
-            saved: 0,
-            date,
-            category,
-        },
-        {
-            name: 'Garlic',
-            quantity: 250,
-            unit: 'gm',
-            comment: '',
-            saved: 1,
-            date,
-            category: 'Vegetables',
-        },
-    ];
+    const items = itemsImpExp;
 
     items.forEach(async item => {
         await db.addUpdateItem(item, FDBKeyRange.only);
@@ -473,46 +475,7 @@ test('export import test', async () => {
 test('import empty items test', async () => {
     const db = await openDb(fakeIndexedDB, true /* beSilent */);
     expect(db).toBeTruthy();
-    const date = new Date();
-    const category = undefined;
-    let items: Item[] = [
-        {
-            name: 'Cabbage',
-            quantity: 1,
-            unit: 'Kg',
-            comment: '',
-            saved: 0,
-            date,
-            category: 'Vegetables',
-        },
-        {
-            name: 'Rice powder',
-            quantity: 1,
-            unit: 'Packet(s)',
-            comment: '500gm',
-            saved: 1,
-            date,
-            category,
-        },
-        {
-            name: 'Chicken',
-            quantity: 1,
-            unit: 'Kg',
-            comment: 'curry cut',
-            saved: 0,
-            date,
-            category,
-        },
-        {
-            name: 'Garlic',
-            quantity: 250,
-            unit: 'gm',
-            comment: '',
-            saved: 1,
-            date,
-            category: 'Vegetables',
-        },
-    ];
+    const items = itemsImpExp;
 
     items.forEach(async item => {
         await db.addUpdateItem(item, FDBKeyRange.only);
