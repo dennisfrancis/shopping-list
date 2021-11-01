@@ -512,3 +512,44 @@ test('import empty items test', async () => {
     expect(localStorageAfterImport.getItem('settings_name')).toEqual(localStorage.getItem('settings_name'));
     expect(localStorageAfterImport.getItem('settings_message')).toEqual(localStorage.getItem('settings_message'));
 });
+
+test('import invalid json test', async () => {
+    const db = await openDb(fakeIndexedDB, true /* beSilent */);
+    expect(db).toBeTruthy();
+    const items = itemsImpExp;
+
+    items.forEach(async item => {
+        await db.addUpdateItem(item, FDBKeyRange.only);
+    });
+
+    let localStorage = new LocalStorageMock();
+    let localStorageAfterImport = new LocalStorageMock();
+    const settingsName = 'Amos';
+    const settingsMessage = 'Address: 32P1 seller av. 34571';
+    [localStorage, localStorageAfterImport].forEach(strg => {
+        strg.setItem('settings_name', settingsName);
+        strg.setItem('settings_message', settingsMessage);
+    });
+
+    const jsonString = '{items: []}';
+    const ok = await db.importFromJSON(jsonString, FDBKeyRange.only, localStorageAfterImport);
+
+    expect(ok).toBeFalsy(); // Import should fail (and not crash!).
+
+    const list = await db.getAllItems() as Item[];
+
+    expect(list).toHaveLength(items.length);
+
+    list.forEach((item, index) => {
+        expect(item.name).toEqual(items[index].name);
+        expect(item.quantity).toEqual(items[index].quantity);
+        expect(item.unit).toEqual(items[index].unit);
+        expect(item.comment).toEqual(items[index].comment);
+        expect(item.date).toEqual(items[index].date);
+        expect(item.saved).toEqual(items[index].saved);
+        expect(item.category).toEqual(items[index].category)
+    });
+
+    expect(localStorageAfterImport.getItem('settings_name')).toEqual(localStorage.getItem('settings_name'));
+    expect(localStorageAfterImport.getItem('settings_message')).toEqual(localStorage.getItem('settings_message'));
+});
