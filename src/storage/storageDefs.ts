@@ -238,7 +238,15 @@ export class ShoppingDatabase {
         keyRangeOnly: (x: any) => IDBKeyRange = IDBKeyRange.only,
         localStorage: StorageMin = window.localStorage) {
 
-        const obj = JSON.parse(jsonString);
+        let obj;
+
+        try {
+            obj = JSON.parse(jsonString);
+        } catch (e) {
+            // console.log('JSON parse error: ' + e);
+            return false;
+        }
+
         if (typeof obj !== 'object')
             return false;
 
