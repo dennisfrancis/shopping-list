@@ -258,18 +258,22 @@ export class ShoppingDatabase {
             message: typeof obj.message === 'string' ? obj.message : '',
         }
 
-        await this.clearAll();
-        for (let i = 0; i < items.length; ++i) {
-            try {
-                await this.addUpdateItem(items[i], keyRangeOnly);
-            } catch (e) {
-                console.debug('Error adding item : ' + items[i] + ' err = ' + e);
-                return false;
+        if (items.length) {
+            await this.clearAll();
+            for (let i = 0; i < items.length; ++i) {
+                try {
+                    await this.addUpdateItem(items[i], keyRangeOnly);
+                } catch (e) {
+                    console.debug('Error adding item : ' + items[i] + ' err = ' + e);
+                    return false;
+                }
             }
         }
 
-        localStorage.setItem('settings_name', repr.name);
-        localStorage.setItem('settings_message', repr.message);
+        if (repr.name !== '')
+            localStorage.setItem('settings_name', repr.name);
+        if (repr.message !== '')
+            localStorage.setItem('settings_message', repr.message);
 
         return true;
     }
