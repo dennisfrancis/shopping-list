@@ -493,7 +493,7 @@ test('import empty items test', async () => {
     const jsonString = '{"items": []}';
     const ok = await db.importFromJSON(jsonString, FDBKeyRange.only, localStorageAfterImport);
 
-    expect(ok).toBeTruthy();
+    expect(ok).toBeFalsy(); // Import should not get any data(items or settings_* values).
 
     const list = await db.getAllItems() as Item[];
 

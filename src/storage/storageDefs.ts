@@ -266,6 +266,8 @@ export class ShoppingDatabase {
             message: typeof obj.message === 'string' ? obj.message : '',
         }
 
+        let retVal = false;
+
         if (items.length) {
             await this.clearAll();
             for (let i = 0; i < items.length; ++i) {
@@ -276,14 +278,19 @@ export class ShoppingDatabase {
                     return false;
                 }
             }
+            retVal = true;
         }
 
-        if (repr.name !== '')
+        if (repr.name !== '') {
             localStorage.setItem('settings_name', repr.name);
-        if (repr.message !== '')
+            retVal = true;
+        }
+        if (repr.message !== '') {
             localStorage.setItem('settings_message', repr.message);
+            retVal = true;
+        }
 
-        return true;
+        return retVal;
     }
 }
 
