@@ -469,3 +469,83 @@ test('export import test', async () => {
     expect(localStorage.getItem('settings_name')).toEqual(localStorageAfterImport.getItem('settings_name'));
     expect(localStorage.getItem('settings_message')).toEqual(localStorageAfterImport.getItem('settings_message'));
 });
+
+test('import empty items test', async () => {
+    const db = await openDb(fakeIndexedDB, true /* beSilent */);
+    expect(db).toBeTruthy();
+    const date = new Date();
+    const category = undefined;
+    let items: Item[] = [
+        {
+            name: 'Cabbage',
+            quantity: 1,
+            unit: 'Kg',
+            comment: '',
+            saved: 0,
+            date,
+            category: 'Vegetables',
+        },
+        {
+            name: 'Rice powder',
+            quantity: 1,
+            unit: 'Packet(s)',
+            comment: '500gm',
+            saved: 1,
+            date,
+            category,
+        },
+        {
+            name: 'Chicken',
+            quantity: 1,
+            unit: 'Kg',
+            comment: 'curry cut',
+            saved: 0,
+            date,
+            category,
+        },
+        {
+            name: 'Garlic',
+            quantity: 250,
+            unit: 'gm',
+            comment: '',
+            saved: 1,
+            date,
+            category: 'Vegetables',
+        },
+    ];
+
+    items.forEach(async item => {
+        await db.addUpdateItem(item, FDBKeyRange.only);
+    });
+
+    let localStorage = new LocalStorageMock();
+    let localStorageAfterImport = new LocalStorageMock();
+    const settingsName = 'Amos';
+    const settingsMessage = 'Address: 32P1 seller av. 34571';
+    [localStorage, localStorageAfterImport].forEach(strg => {
+        strg.setItem('settings_name', settingsName);
+        strg.setItem('settings_message', settingsMessage);
+    });
+
+    const jsonString = '{"items": []}';
+    const ok = await db.importFromJSON(jsonString, FDBKeyRange.only, localStorageAfterImport);
+
+    expect(ok).toBeTruthy();
+
+    const list = await db.getAllItems() as Item[];
+
+    expect(list).toHaveLength(items.length);
+
+    list.forEach((item, index) => {
+        expect(item.name).toEqual(items[index].name);
+        expect(item.quantity).toEqual(items[index].quantity);
+        expect(item.unit).toEqual(items[index].unit);
+        expect(item.comment).toEqual(items[index].comment);
+        expect(item.date).toEqual(items[index].date);
+        expect(item.saved).toEqual(items[index].saved);
+        expect(item.category).toEqual(items[index].category)
+    });
+
+    expect(localStorageAfterImport.getItem('settings_name')).toEqual(localStorage.getItem('settings_name'));
+    expect(localStorageAfterImport.getItem('settings_message')).toEqual(localStorage.getItem('settings_message'));
+});
