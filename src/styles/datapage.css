@@ -1,4 +1,46 @@
 
 #settings-form {
-    max-width: 400px;
+    margin: 50px auto;
+    padding: 0 20px;
+    max-width: 600px;
+}
+
+#import-export {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    max-width: 600px;
+}
+
+.data-button {
+    height: 70px;
+    border: none;
+    color: white;
+}
+
+.data-export-button {
+    background-color: rgb(13, 139, 2);
+    border-color: rgb(13, 139, 2);
+}
+
+.data-export-button:hover, .data-export-button:active, .data-export-button:visited .data-export-button:focus {
+    background-color: rgb(16, 170, 2);
+    border-color: rgb(16, 170, 2);
+}
+
+.data-import-button {
+    background-color: rgb(83, 81, 204);
+    border-color: rgb(83, 81, 204);
+}
+
+.data-import-button:hover, .data-import-button:active, .data-import-button:visited .data-import-button:focus {
+    background-color: rgb(101, 99, 206);
+    border-color: rgb(101, 99, 206);
+}
+
+.sepline-horiz {
+    background-color: rgb(7, 7, 71);
+    height: 1px;
+    width: 90%;
+    margin: 50px auto 50px auto;
 }

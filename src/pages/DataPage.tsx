@@ -77,43 +77,50 @@ function DataPage(props: {
     }
 
     return (
-        <form id="settings-form" style={{margin: 20}}>
-            <div className="mb-3">
-                <label htmlFor="settings-name" className="form-label">Name</label>
-                <input type="text" id="settings-name" className="form-control"
-                    aria-label="Your name"
-                    placeholder="Your name"
-                    onChange={handleNameChange}
-                    value={name ? name : ''}>
-                </input>
-            </div>
-            <div className="mb-3">
-                <label htmlFor="settings-message" className="form-label">Custom message for delivery</label>
-                <textarea id="settings-message" className="form-control"
-                    aria-label="Your message"
-                    placeholder="Your message"
-                    onChange={handleMessageChange}
-                    value={message ? message : ''}>
-                </textarea>
+        <div id="data-page">
+            <div id="import-export">
+                    <input type="button" value={"Export Data"} className="data-button data-export-button"
+                            onClick={handleExport} style={{marginBottom: 20}}></input>
+                    <input type="button" value={importStatus === 0 ? "Import from file" : (importStatus === -1 ? "Import failed!" : "Import successful!")}
+                            className="data-button data-import-button"
+                            onClick={handleImport}></input>
+                    <input type="file" id="importFile" onChange={handleImportFile}
+                        style={{display: "none"}} accept=".json"></input>
             </div>
             <br></br>
-            <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
-                <input type="submit" value={"Save"} className="btn btn-success"
-                    onClick={handleSave} style={{flexGrow: 0.40}}></input>
-                <input type="button" value="Clear" className="btn btn-danger"
-                    onClick={handleClear} style={{flexGrow: 0.40}}></input>
-            </div>
-            <br></br>
-            <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
-                <input type="button" value={"Export"} className="btn btn-primary"
-                        onClick={handleExport} style={{flexGrow: 0.40}}></input>
-                <input type="button" value={importStatus === 0 ? "Import" : (importStatus === -1 ? "Import failed!" : "Import successful!")}
-                        className="btn btn-primary"
-                        onClick={handleImport} style={{flexGrow: 0.40}}></input>
-                <input type="file" id="importFile" onChange={handleImportFile}
-                    style={{display: "none"}} accept=".json"></input>
-            </div>
-        </form>
+            <div className="sepline-horiz"></div>
+            <form id="settings-form">
+                <h5>Delivery Information</h5>
+                <br></br>
+                <div className="mb-3">
+                    <label htmlFor="settings-name" className="form-label">Name</label>
+                    <input type="text" id="settings-name" className="form-control"
+                        aria-label="Your name"
+                        placeholder="Your name"
+                        onChange={handleNameChange}
+                        value={name ? name : ''}>
+                    </input>
+                </div>
+                <div className="mb-3">
+                    <label htmlFor="settings-message" className="form-label">Custom message for delivery</label>
+                    <textarea id="settings-message" className="form-control"
+                        rows={6}
+                        aria-label="Your message"
+                        placeholder="Your message"
+                        onChange={handleMessageChange}
+                        value={message ? message : ''}>
+                    </textarea>
+                </div>
+                <br></br>
+                <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
+                    <input type="submit" value={"Save"} className="btn btn-success"
+                        onClick={handleSave} style={{flexGrow: 0.40}}></input>
+                    <input type="button" value="Clear" className="btn btn-danger"
+                        onClick={handleClear} style={{flexGrow: 0.40}}></input>
+                </div>
+                <br></br>
+            </form>
+        </div>
     );
 }
 
