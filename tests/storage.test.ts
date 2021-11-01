@@ -466,8 +466,8 @@ test('export import test', async () => {
         expect(item.category).toEqual(items[index].category)
     });
 
-    expect(localStorage.getItem('settings_name')).toEqual(localStorageAfterImport.getItem('settings_name'));
-    expect(localStorage.getItem('settings_message')).toEqual(localStorageAfterImport.getItem('settings_message'));
+    expect(localStorageAfterImport.getItem('settings_name')).toEqual(localStorage.getItem('settings_name'));
+    expect(localStorageAfterImport.getItem('settings_message')).toEqual(localStorage.getItem('settings_message'));
 });
 
 test('import empty items test', async () => {
