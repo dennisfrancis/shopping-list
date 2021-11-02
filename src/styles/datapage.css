@@ -15,26 +15,29 @@
 
 .data-button {
     height: 70px;
-    border: none;
-    color: white;
+    border: 1px solid;
 }
 
 .data-export-button {
-    background-color: rgb(13, 139, 2);
+    color: black;
+    background-color: white;
     border-color: rgb(13, 139, 2);
 }
 
 .data-export-button:hover, .data-export-button:active, .data-export-button:visited .data-export-button:focus {
+    color: white;
     background-color: rgb(16, 170, 2);
     border-color: rgb(16, 170, 2);
 }
 
 .data-import-button {
-    background-color: rgb(83, 81, 204);
+    color: black;
+    background-color: white;
     border-color: rgb(83, 81, 204);
 }
 
 .data-import-button:hover, .data-import-button:active, .data-import-button:visited .data-import-button:focus {
+    color: white;
     background-color: rgb(101, 99, 206);
     border-color: rgb(101, 99, 206);
 }
