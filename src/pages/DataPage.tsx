@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { useContext, useState } from "react";
 import { StorageContext } from "../contexts/storage";
 

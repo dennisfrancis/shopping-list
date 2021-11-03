@@ -1,3 +1,4 @@
+/* eslint-disable */
 export const Units = new Set([
     'Kg',
     'gm',

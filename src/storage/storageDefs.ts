@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { Item, cloneItem, BooleanNumber, JSONRepresentationType, getItemFromObject, StorageMin } from '../types/item';
 
 const DB_NAME = 'shopping-list-app-db';

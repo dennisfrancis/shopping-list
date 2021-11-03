@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from "react";
 import { useContext } from "react";
 import { Categories, Units } from "../consts/itemConsts";

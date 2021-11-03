@@ -1,3 +1,4 @@
+/* eslint-disable */
 export type BooleanNumber = 0 | 1;
 
 export type Item = {

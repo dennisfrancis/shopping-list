@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { Item } from '../types/item';
 
 export function DebugItemLists(props: {

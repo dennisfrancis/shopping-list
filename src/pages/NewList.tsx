@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from "react";
 import { Item, ItemStatesAndSetters } from '../types/item';
 import { ItemControls } from "../components/ItemControls";

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { openDb, ShoppingDatabase } from '../src/storage/storageDefs';
 import { cloneItem, Item } from '../src/types/item';
 

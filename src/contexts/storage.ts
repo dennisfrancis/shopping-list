@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react'
 import { Item } from '../types/item';
 import { ShoppingDatabase } from '../storage/storageDefs';

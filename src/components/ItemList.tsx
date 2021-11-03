@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { useContext, useState } from "react";
 import { Item, ItemStatesAndSetters } from '../types/item';
 import { ItemDisplay } from '../components/ItemDisplay';
