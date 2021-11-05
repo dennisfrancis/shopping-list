@@ -157,6 +157,8 @@ function App() {
             </Route>
           </Switch>
         </StorageProvider>
+
+        <footer><small>&copy; Dennis Francis 2021</small></footer>
       </div>
     </HashRouter>
   );

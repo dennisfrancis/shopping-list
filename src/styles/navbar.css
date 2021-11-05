@@ -23,3 +23,14 @@ nav {
 .nav-item:hover {
     background-color: white;
 }
+
+footer {
+    width: 100%;
+    background-color: rgb(7, 7, 71);
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    z-index: 10;
+    text-align: center;
+    color:grey;
+}
