@@ -23,6 +23,7 @@
     ],
 
     "rules": {
+        "@typescript-eslint/explicit-module-boundary-types": "error",
         "operator-linebreak": "off",
         "no-plusplus": "off",
         "no-console": "off",
