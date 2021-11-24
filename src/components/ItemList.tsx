@@ -64,8 +64,8 @@ export function ItemList(props: {
     };
 
     return (
-        <div>
-            <ol className="list-group list-group-flush list-group-numbered" style={{maxHeight: "80vh", overflowY:"auto"}}>
+        <div style={{height: "calc(100vh - 220px)"}}>
+            <ol className="list-group list-group-flush list-group-numbered" style={{height: "100%", overflowY:"auto"}}>
                 {props.list.map(item =>
                     <ItemDisplay item={item} key={item.name}
                         newItemStatesAndSetters={props.newItemStatesAndSetters}
@@ -126,7 +126,7 @@ export function NewItemList(props: {
             <p>Shopping list({props.list.length})</p>
             <ItemList list={props.list} newItemStatesAndSetters={props.newItemStatesAndSetters}
                 removeItem={props.removeItem}/>
-            <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between", marginTop: 10}}>
+            <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between", marginTop: 25}}>
                 <input type="button" value="Save and Copy" className="btn btn-primary"
                     onClick={handleSave} style={{flexGrow: 0.40}} disabled={props.list.length === 0}></input>
                 <input type="button" value="Clear" className="btn btn-danger"
