@@ -95,7 +95,8 @@ export function ItemControls(props: ItemControlProps) {
             setQuantity(0);
             return;
         }
-        setQuantity(parseInt(e.currentTarget.value));
+        const qty = parseFloat(e.currentTarget.value);
+        setQuantity(Math.round(qty * 10) / 10);
     }
 
     function handleUnitChange(e: React.FormEvent<HTMLInputElement>) {
