@@ -31,7 +31,7 @@ export function ItemDisplay(props: {
                 <div>{props.item.quantity}&nbsp;{props.item.unit}&nbsp;
                     { (props.item.category !== undefined) && <small style={{fontStyle: "italic", color: "red"}}>{'#' + props.item.category}</small> }</div>
             </div>
-            {props.removeItem && <button type="button" className="btn-close" aria-label="Close" onClick={removeItem}></button>}
+            {props.removeItem && <button type="button" className={(selected ? "btn-close btn-close-white" : "btn-close")} aria-label="Close" onClick={removeItem}></button>}
         </li>
     );
 }
