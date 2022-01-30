@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React from "react";
-import { Item } from '../types/item';
+import { Item, cloneItem } from '../types/item';
 import { ListDisplay  } from "../components/ListDisplay";
 import { ItemList } from "../components/ItemList";
 import { useState } from "react";
@@ -9,6 +9,8 @@ import "../styles/previouslists.css";
 
 export function PreviousLists(props: {
     dateMap: Map<number, Item[]>;
+    setNewList: React.Dispatch<React.SetStateAction<Item[]>>;
+    date: Date;
 }) {
     let [selectedDate, setSelectedDate] = useState<number>(0);
     const dateList = [...props.dateMap.keys()].sort((date1, date2) => date2.valueOf() - date1.valueOf());
@@ -26,7 +28,10 @@ export function PreviousLists(props: {
                 </div>
                 { dateList.length !== 0 && <div className="sepline"></div> }
                 <div id="previous-list-one">
-                    { (selectedDate !== 0 && selectedItems !== undefined) && <ItemList list={selectedItems} copyList={true}/> }
+                    {
+                        (selectedDate !== 0 && selectedItems !== undefined) &&
+                        <ItemList list={selectedItems} copyList={true} setNewList={props.setNewList} date={props.date} />
+                    }
                 </div>
             </div>
             <br></br>

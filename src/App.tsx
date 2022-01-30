@@ -140,7 +140,7 @@ function App() {
               <DataPage setRunFetchEffect={setRunFetchEffect} />
             </Route>
             <Route path="/previous">
-              <PreviousLists dateMap={dateMap} />
+              <PreviousLists dateMap={dateMap} setNewList={setNewList} date={date} />
             </Route>
             <Route path="/">
               <NewList

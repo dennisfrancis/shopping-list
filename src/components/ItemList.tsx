@@ -1,8 +1,9 @@
 /* eslint-disable */
 import { useContext, useState } from "react";
-import { Item, ItemStatesAndSetters } from '../types/item';
+import { Item, ItemStatesAndSetters, cloneItem } from '../types/item';
 import { ItemDisplay } from '../components/ItemDisplay';
 import { StorageContext } from '../contexts/storage';
+import { useHistory } from 'react-router-dom';
 
 import '../styles/newitemlist.css';
 
@@ -48,10 +49,14 @@ export function ItemList(props: {
     list: Item[],
     copyList?: boolean,
     removeItem?: ((x: Item) => void),
-    newItemStatesAndSetters?: ItemStatesAndSetters
+    newItemStatesAndSetters?: ItemStatesAndSetters,
+    setNewList?: React.Dispatch<React.SetStateAction<Item[]>>,
+    date?: Date
 }) {
 
     let [copied, setCopied] = useState(false);
+    const storage = useContext(StorageContext);
+    let history = useHistory();
 
     const handleCopy = () => {
         navigator.clipboard.writeText(itemListToText(props.list))
@@ -62,6 +67,44 @@ export function ItemList(props: {
                 }, 1000);
             });
     };
+
+    const handleNewListFrom = function(e: React.FormEvent<HTMLInputElement>) {
+        e.preventDefault();
+
+        if (!props.setNewList) {
+            return;
+        }
+
+        props.setNewList(currList => {
+            if (!props.list) {
+                return currList;
+            }
+
+            let newDate = props.date || new Date();
+
+            let outMap = new Map<string, Item>();
+            currList.forEach((item) => {
+                outMap.set(item.name, item);
+            });
+
+            props.list.forEach((item) => {
+                item = cloneItem(item);
+                item.saved = 0;
+                item.date = newDate;
+                outMap.set(item.name, item);
+            });
+
+            let outList: Item[] = [];
+            outMap.forEach((item) => {
+                outList.push(item);
+                storage.addUpdate(item);
+            });
+
+            return outList;
+        });
+
+        history.push('/');
+    }
 
     return (
         <div style={{height: "calc(100vh - 220px)"}}>
@@ -76,6 +119,11 @@ export function ItemList(props: {
                 props.copyList && props.list.length > 0 &&
                 <input type="button" value={copied ? 'Copied!' : 'Copy list'} className={"btn " + (copied ? "btn-success" : "btn-primary")}
                     onClick={handleCopy}/>
+            }
+            {
+                props.setNewList && props.date && props.list.length > 0 &&
+                <input type="button" value="Create new list" className="btn btn-primary"
+                    onClick={handleNewListFrom}/>
             }
         </div>
     );
