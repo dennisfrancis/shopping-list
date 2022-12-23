@@ -59,6 +59,13 @@ input[type=number], input[type=search] {
         padding: 25px;
     }
 
+    #item-search-list {
+        width: 90%;
+        margin-left: 15px;
+        padding: 25px;
+        background: white;
+    }
+
     .form-label {
         color:black !important;
         letter-spacing: 1px !important;
