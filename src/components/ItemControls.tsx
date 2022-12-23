@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React from "react";
-import { useContext } from "react";
+import { useContext, useLayoutEffect, useRef } from "react";
 import { Categories, Units } from "../consts/itemConsts";
 import { StorageContext } from "../contexts/storage";
 import { Item, ItemStatesAndSetters } from '../types/item';
@@ -26,6 +26,8 @@ type ItemSearchListProps = {
     newItemStatesAndSetters: ItemStatesAndSetters;
     searchListVisible: boolean;
     setSearchListVisible: React.Dispatch<React.SetStateAction<boolean>>;
+    searchYPosition: number;
+    setSearchYPosition: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export function ItemControls(props: ItemControlProps) {
@@ -217,6 +219,12 @@ export function ItemControls(props: ItemControlProps) {
 
 export function ItemSearchList(props: ItemSearchListProps) {
 
+    const itemListDiv = useRef<HTMLDivElement>(null);
+    useLayoutEffect(() => {
+        if (itemListDiv.current)
+            itemListDiv.current.scrollTop = props.searchYPosition;
+    });
+
     let itemDisplayList: JSX.Element[] = [];
     props.masterItems.forEach(masterItem => {
         itemDisplayList.push(
@@ -229,8 +237,14 @@ export function ItemSearchList(props: ItemSearchListProps) {
         );
     });
 
+    function handleScroll(e: React.UIEvent) {
+        props.setSearchYPosition(e.currentTarget.scrollTop);
+    }
+
     return (
-        <div id="item-search-list" style={{height: "calc(100vh - 220px)", overflowY:"scroll"}}>
+        <div id="item-search-list" ref={itemListDiv}
+            style={{height: "calc(100vh - 220px)", overflowY:"scroll"}}
+            onScroll={handleScroll}>
             { itemDisplayList }
         </div>
     );

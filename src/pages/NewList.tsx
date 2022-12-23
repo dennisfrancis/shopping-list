@@ -31,6 +31,7 @@ export function NewList(props: {
     } = props.newItemStatesAndSetters;
 
     let [searchListVisible, setSearchListVisible] = useState<boolean>(false);
+    let [searchYPosition, setSearchYPosition] = useState<number>(0);
 
     const removeItem = (item: Item) => {
         const nameToRemove = item.name;
@@ -57,7 +58,8 @@ export function NewList(props: {
                     masterList={props.masterList}
                     newList={props.newList}
                     newItemStatesAndSetters={props.newItemStatesAndSetters}
-                    searchListVisible={searchListVisible} setSearchListVisible={setSearchListVisible}/> :
+                    searchListVisible={searchListVisible} setSearchListVisible={setSearchListVisible}
+                    searchYPosition={searchYPosition} setSearchYPosition={setSearchYPosition} /> :
                 <ItemControls masterList={props.masterList} setMasterList={props.setMasterList}
                     newList={props.newList} setNewList={props.setNewList}
                     masterItems={props.masterItems} newItemStatesAndSetters={props.newItemStatesAndSetters}
