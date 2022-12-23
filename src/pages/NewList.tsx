@@ -1,10 +1,10 @@
 /* eslint-disable */
 import React from "react";
 import { Item, ItemStatesAndSetters } from '../types/item';
-import { ItemControls } from "../components/ItemControls";
+import { ItemControls, ItemSearchList } from "../components/ItemControls";
 import { DebugItemLists } from "../components/DebugItemLists";
 import { NewItemList } from '../components/ItemList';
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { StorageContext } from "../contexts/storage";
 
 import "../styles/newlist.css";
@@ -30,6 +30,8 @@ export function NewList(props: {
         setCategory,
     } = props.newItemStatesAndSetters;
 
+    let [searchListVisible, setSearchListVisible] = useState<boolean>(false);
+
     const removeItem = (item: Item) => {
         const nameToRemove = item.name;
         const list = props.newList.filter(oldItem => oldItem.name !== nameToRemove);
@@ -49,9 +51,19 @@ export function NewList(props: {
 
     return (
         <div id="newlist-wrapper">
-            <ItemControls masterList={props.masterList} setMasterList={props.setMasterList}
-                newList={props.newList} setNewList={props.setNewList}
-                masterItems={props.masterItems} newItemStatesAndSetters={props.newItemStatesAndSetters}/>
+            { searchListVisible ?
+                <ItemSearchList
+                    masterItems={props.masterItems}
+                    masterList={props.masterList}
+                    newList={props.newList}
+                    newItemStatesAndSetters={props.newItemStatesAndSetters}
+                    searchListVisible={searchListVisible} setSearchListVisible={setSearchListVisible}/> :
+                <ItemControls masterList={props.masterList} setMasterList={props.setMasterList}
+                    newList={props.newList} setNewList={props.setNewList}
+                    masterItems={props.masterItems} newItemStatesAndSetters={props.newItemStatesAndSetters}
+                    searchListVisible={searchListVisible} setSearchListVisible={setSearchListVisible}/>
+            }
+
             <div className="sepline"></div>
             <NewItemList list={props.newList} newItemStatesAndSetters={props.newItemStatesAndSetters}
                 removeItem={removeItem} setRunFetchEffect={props.setRunFetchEffect}/>

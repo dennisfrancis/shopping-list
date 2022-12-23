@@ -8,6 +8,13 @@
     padding: 25px;
 }
 
+#item-search-list {
+    width: 35%;
+    margin-left: 15px;
+    padding: 25px;
+    background: white;
+}
+
 .bottom-border-only {
     border-radius: 0;
     border-top: none;

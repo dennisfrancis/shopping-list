@@ -4,6 +4,7 @@ import { useContext } from "react";
 import { Categories, Units } from "../consts/itemConsts";
 import { StorageContext } from "../contexts/storage";
 import { Item, ItemStatesAndSetters } from '../types/item';
+import { ItemDisplay } from './ItemDisplay';
 
 import '../styles/itemcontrols.css';
 
@@ -14,7 +15,18 @@ type ItemControlProps = {
     newList: Item[];
     setNewList: React.Dispatch<React.SetStateAction<Item[]>>;
     newItemStatesAndSetters: ItemStatesAndSetters;
+    searchListVisible: boolean;
+    setSearchListVisible: React.Dispatch<React.SetStateAction<boolean>>;
 };
+
+type ItemSearchListProps = {
+    masterList: Set<string>;
+    masterItems: Item[];
+    newList: Item[];
+    newItemStatesAndSetters: ItemStatesAndSetters;
+    searchListVisible: boolean;
+    setSearchListVisible: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
 export function ItemControls(props: ItemControlProps) {
     const storage = useContext(StorageContext)
@@ -120,6 +132,11 @@ export function ItemControls(props: ItemControlProps) {
         setCategory(e.currentTarget.value === '' ? undefined : e.currentTarget.value);
     }
 
+    function handleContextMenu(e: React.FormEvent<HTMLInputElement>) {
+        e.preventDefault();
+        props.setSearchListVisible(true);
+    }
+
     return (
         <form id="item-controls">
             <div className="mb-3">
@@ -128,6 +145,7 @@ export function ItemControls(props: ItemControlProps) {
                     list="next-item-list"
                     aria-label="Search through master list"
                     onChange={handleItemNameChange}
+                    onContextMenu={handleContextMenu}
                     value={newItemName}
                     required></input>
             </div>
@@ -196,3 +214,24 @@ export function ItemControls(props: ItemControlProps) {
         </form>
     );
 };
+
+export function ItemSearchList(props: ItemSearchListProps) {
+
+    let itemDisplayList: JSX.Element[] = [];
+    props.masterItems.forEach(masterItem => {
+        itemDisplayList.push(
+            <ItemDisplay
+                key={masterItem.name}
+                item={masterItem}
+                newItemStatesAndSetters={props.newItemStatesAndSetters}
+                disabled={!!props.newList.find(item => item.name === masterItem.name)}
+                setSearchListVisible={props.setSearchListVisible}/>
+        );
+    });
+
+    return (
+        <div id="item-search-list" style={{height: "calc(100vh - 220px)", overflowY:"scroll"}}>
+            { itemDisplayList }
+        </div>
+    );
+}
