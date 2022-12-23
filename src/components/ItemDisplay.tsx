@@ -23,8 +23,11 @@ export function ItemDisplay(props: {
         props.newItemStatesAndSetters.setExisting(true);
         props.newItemStatesAndSetters.setCategory(props.item.category);
 
-        if (props.setSearchListVisible)
+        if (props.setSearchListVisible) {
             props.setSearchListVisible(false); // Hide search list
+            if (props.newItemStatesAndSetters)
+                props.newItemStatesAndSetters.setExisting(false);
+        }
     };
 
     let selected = props.newItemStatesAndSetters ? (props.newItemStatesAndSetters.name === props.item.name) : false;
