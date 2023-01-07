@@ -1,76 +1,95 @@
-/* eslint-disable */
-import React from "react";
+import React, { useContext, useState } from 'react';
 import { Item, ItemStatesAndSetters } from '../types/item';
-import { ItemControls, ItemSearchList } from "../components/ItemControls";
-import { DebugItemLists } from "../components/DebugItemLists";
+import { ItemControls, ItemSearchList } from '../components/ItemControls';
+import { DebugItemLists } from '../components/DebugItemLists';
 import { NewItemList } from '../components/ItemList';
-import { useContext, useState } from "react";
-import { StorageContext } from "../contexts/storage";
+import { StorageContext } from '../contexts/storage';
 
-import "../styles/newlist.css";
+import '../styles/newlist.css';
 
-export function NewList(props: {
-    masterList: Set<string>;
-    masterItems: Item[];
-    setMasterList: React.Dispatch<React.SetStateAction<Set<string>>>;
-    newList: Item[];
-    setNewList: React.Dispatch<React.SetStateAction<Item[]>>;
-    newItemStatesAndSetters: ItemStatesAndSetters;
-    runFetchEffect: boolean;
-    setRunFetchEffect: React.Dispatch<React.SetStateAction<boolean>>;
+export default function NewList(props: {
+  masterList: Set<string>;
+  masterItems: Item[];
+  setMasterList: React.Dispatch<React.SetStateAction<Set<string>>>;
+  newList: Item[];
+  setNewList: React.Dispatch<React.SetStateAction<Item[]>>;
+  newItemStatesAndSetters: ItemStatesAndSetters;
+  setRunFetchEffect: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-    const storage = useContext(StorageContext);
-    let {
-        name,
-        setName,
-        setQuantity,
-        setUnit,
-        setComment,
-        setExisting,
-        setCategory,
-    } = props.newItemStatesAndSetters;
+  const storage = useContext(StorageContext);
+  const {
+    newItemStatesAndSetters, newList, setNewList,
+    masterList, masterItems, setMasterList,
+    setRunFetchEffect,
+  } = props;
+  const {
+    name,
+    setName,
+    setQuantity,
+    setUnit,
+    setComment,
+    setExisting,
+    setCategory,
+  } = newItemStatesAndSetters;
 
-    let [searchListVisible, setSearchListVisible] = useState<boolean>(false);
-    let [searchYPosition, setSearchYPosition] = useState<number>(0);
+  const [searchListVisible, setSearchListVisible] = useState<boolean>(false);
+  const [searchYPosition, setSearchYPosition] = useState<number>(0);
 
-    const removeItem = (item: Item) => {
-        const nameToRemove = item.name;
-        const list = props.newList.filter(oldItem => oldItem.name !== nameToRemove);
-        storage.delete(item);
-        props.setNewList(list);
-        if (name === nameToRemove) {
-            setName('');
-            setQuantity(0);
-            setUnit('');
-            setComment('');
-            setExisting(false);
-            setCategory(undefined);
-        }
-    };
+  const removeItem = (item: Item) => {
+    const nameToRemove = item.name;
+    const list = newList.filter((oldItem) => oldItem.name !== nameToRemove);
+    storage.delete(item);
+    setNewList(list);
+    if (name === nameToRemove) {
+      setName('');
+      setQuantity(0);
+      setUnit('');
+      setComment('');
+      setExisting(false);
+      setCategory(undefined);
+    }
+  };
 
-    let debugMode = false;
+  const debugMode = false;
 
-    return (
-        <div id="newlist-wrapper">
-            { searchListVisible ?
-                <ItemSearchList
-                    masterItems={props.masterItems}
-                    masterList={props.masterList}
-                    newList={props.newList}
-                    newItemStatesAndSetters={props.newItemStatesAndSetters}
-                    searchListVisible={searchListVisible} setSearchListVisible={setSearchListVisible}
-                    searchYPosition={searchYPosition} setSearchYPosition={setSearchYPosition} /> :
-                <ItemControls masterList={props.masterList} setMasterList={props.setMasterList}
-                    newList={props.newList} setNewList={props.setNewList}
-                    masterItems={props.masterItems} newItemStatesAndSetters={props.newItemStatesAndSetters}
-                    searchListVisible={searchListVisible} setSearchListVisible={setSearchListVisible}/>
-            }
+  return (
+    <div id="newlist-wrapper">
+      {(searchListVisible ?
+        (
+          <ItemSearchList
+            masterItems={masterItems}
+            masterList={masterList}
+            newList={newList}
+            newItemStatesAndSetters={newItemStatesAndSetters}
+            searchListVisible={searchListVisible}
+            setSearchListVisible={setSearchListVisible}
+            searchYPosition={searchYPosition}
+            setSearchYPosition={setSearchYPosition}
+          />
+        ) :
+        (
+          <ItemControls
+            masterList={masterList}
+            setMasterList={setMasterList}
+            newList={newList}
+            setNewList={setNewList}
+            masterItems={masterItems}
+            newItemStatesAndSetters={newItemStatesAndSetters}
+            searchListVisible={searchListVisible}
+            setSearchListVisible={setSearchListVisible}
+          />
+        )
+      )}
 
-            <div className="sepline"></div>
-            <NewItemList list={props.newList} newItemStatesAndSetters={props.newItemStatesAndSetters}
-                removeItem={removeItem} setRunFetchEffect={props.setRunFetchEffect}/>
-            {debugMode && <DebugItemLists masterList={props.masterList} newList={props.newList} />}
-            <br></br>
-        </div>
-    );
+      <div className="sepline" />
+      <NewItemList
+        list={newList}
+        newItemStatesAndSetters={newItemStatesAndSetters}
+        removeItem={removeItem}
+        setRunFetchEffect={setRunFetchEffect}
+      />
+      {debugMode && <DebugItemLists masterList={masterList} newList={newList} />}
+      <br />
+    </div>
+  );
 }

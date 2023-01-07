@@ -11,7 +11,7 @@ import './styles/list.css';
 import React from 'react';
 import { Item, ItemStatesAndSetters } from './types/item';
 
-import { NewList } from './pages/NewList';
+import NewList from './pages/NewList';
 import { PreviousLists } from './pages/PreviousLists';
 import DataPage from './pages/DataPage';
 import { openDb } from './storage/storageDefs';
@@ -150,7 +150,6 @@ function App() {
                 setNewList={setNewList}
                 masterItems={masterItems}
                 newItemStatesAndSetters={itemStatesAndSetters}
-                runFetchEffect={runFetchEffect}
                 setRunFetchEffect={setRunFetchEffect}
               />
             </Route>
