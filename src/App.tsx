@@ -156,7 +156,7 @@ function App() {
           </Switch>
         </StorageProvider>
 
-        <footer><small>&copy; Dennis Francis 2021</small></footer>
+        <footer><small>&copy; Dennis Francis 2023</small></footer>
       </div>
     </HashRouter>
   );
