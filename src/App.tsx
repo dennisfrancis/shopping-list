@@ -12,7 +12,7 @@ import React from 'react';
 import { Item, ItemStatesAndSetters } from './types/item';
 
 import NewList from './pages/NewList';
-import { PreviousLists } from './pages/PreviousLists';
+import PreviousLists from './pages/PreviousLists';
 import DataPage from './pages/DataPage';
 import { openDb } from './storage/storageDefs';
 import { StorageType, StorageProvider } from './contexts/storage';
