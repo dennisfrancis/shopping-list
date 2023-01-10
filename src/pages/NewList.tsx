@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { Item, ItemStatesAndSetters } from '../types/item';
 import { ItemControls, ItemSearchList } from '../components/ItemControls';
-import { DebugItemLists } from '../components/DebugItemLists';
+import DebugItemLists from '../components/DebugItemLists';
 import { NewItemList } from '../components/ItemList';
 import { StorageContext } from '../contexts/storage';
 
