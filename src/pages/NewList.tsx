@@ -58,10 +58,8 @@ export default function NewList(props: {
         (
           <ItemSearchList
             masterItems={masterItems}
-            masterList={masterList}
             newList={newList}
             newItemStatesAndSetters={newItemStatesAndSetters}
-            searchListVisible={searchListVisible}
             setSearchListVisible={setSearchListVisible}
             searchYPosition={searchYPosition}
             setSearchYPosition={setSearchYPosition}
@@ -75,7 +73,6 @@ export default function NewList(props: {
             setNewList={setNewList}
             masterItems={masterItems}
             newItemStatesAndSetters={newItemStatesAndSetters}
-            searchListVisible={searchListVisible}
             setSearchListVisible={setSearchListVisible}
           />
         )
