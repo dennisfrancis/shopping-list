@@ -1,7 +1,7 @@
 /* eslint-disable */
 import { useContext, useState } from "react";
 import { Item, ItemStatesAndSetters, cloneItem } from '../types/item';
-import { ItemDisplay } from '../components/ItemDisplay';
+import ItemDisplay from '../components/ItemDisplay';
 import { StorageContext } from '../contexts/storage';
 import { useHistory } from 'react-router-dom';
 

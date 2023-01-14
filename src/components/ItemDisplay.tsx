@@ -1,48 +1,65 @@
-/* eslint-disable */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from 'react';
-import { Item, ItemStatesAndSetters } from "../types/item";
+import { Item, ItemStatesAndSetters } from '../types/item';
 
-export function ItemDisplay(props: {
-    item: Item,
-    newItemStatesAndSetters?: ItemStatesAndSetters,
-    removeItem?: (x: Item) => void,
-    disabled?: boolean,
-    setSearchListVisible?: React.Dispatch<React.SetStateAction<boolean>>,
+export default function ItemDisplay(props: {
+  item: Item,
+  newItemStatesAndSetters?: ItemStatesAndSetters,
+  // eslint-disable-next-line no-unused-vars
+  removeItem?: (x: Item) => void,
+  disabled?: boolean,
+  setSearchListVisible?: React.Dispatch<React.SetStateAction<boolean>>,
 }) {
-    const handleItemClick = () => {
-        if (props.disabled)
-            return;
+  const {
+    disabled,
+    newItemStatesAndSetters,
+    item,
+    setSearchListVisible,
+    removeItem,
+  } = props;
+  const handleItemClick = () => {
+    if (disabled) return;
 
-        if (!props.newItemStatesAndSetters)
-            return;
+    if (!newItemStatesAndSetters) return;
 
-        props.newItemStatesAndSetters.setName(props.item.name);
-        props.newItemStatesAndSetters.setQuantity(props.item.quantity);
-        props.newItemStatesAndSetters.setUnit(props.item.unit);
-        props.newItemStatesAndSetters.setComment(props.item.comment);
-        props.newItemStatesAndSetters.setExisting(true);
-        props.newItemStatesAndSetters.setCategory(props.item.category);
+    newItemStatesAndSetters.setName(item.name);
+    newItemStatesAndSetters.setQuantity(item.quantity);
+    newItemStatesAndSetters.setUnit(item.unit);
+    newItemStatesAndSetters.setComment(item.comment);
+    newItemStatesAndSetters.setExisting(true);
+    newItemStatesAndSetters.setCategory(item.category);
 
-        if (props.setSearchListVisible) {
-            props.setSearchListVisible(false); // Hide search list
-            if (props.newItemStatesAndSetters)
-                props.newItemStatesAndSetters.setExisting(false);
-        }
-    };
+    if (setSearchListVisible) {
+      setSearchListVisible(false); // Hide search list
+      if (newItemStatesAndSetters) {
+        newItemStatesAndSetters.setExisting(false);
+      }
+    }
+  };
 
-    let selected = props.newItemStatesAndSetters ? (props.newItemStatesAndSetters.name === props.item.name) : false;
-    const removeItem = () => {
-        if (props.removeItem)
-            props.removeItem(props.item);
-    };
-    return (
-        <li className={"list-group-item d-flex justify-content-between align-items-start" + (selected ? " active" : "") + (props.disabled ? " disabled" : "")}>
-            <div className="ms-2 me-auto" style={{width: "100vw"}} onClick={handleItemClick}>
-                <div className="fw-bold" style={{display: "inline"}}>{props.item.name + (props.item.comment ? ' (' + props.item.comment + ')' : '')}</div>
-                <div>{props.item.quantity}&nbsp;{props.item.unit}&nbsp;
-                    { (props.item.category !== undefined) && <small style={{fontStyle: "italic", color: "red"}}>{'#' + props.item.category}</small> }</div>
-            </div>
-            {props.removeItem && <button type="button" className={(selected ? "btn-close btn-close-white" : "btn-close")} aria-label="Close" onClick={removeItem}></button>}
-        </li>
-    );
+  const selected = newItemStatesAndSetters ?
+    (newItemStatesAndSetters.name === item.name) : false;
+  const localRemoveItem = () => {
+    if (removeItem) removeItem(item);
+  };
+
+  const text = item.name + (item.comment ? ` (${item.comment})` : '');
+  return (
+    <li className={`list-group-item d-flex justify-content-between align-items-start${(selected ? ' active' : '')}${(disabled ? ' disabled' : '')}`}>
+
+      { /* eslint-disable-next-line jsx-a11y/click-events-have-key-events */ }
+      <div className="ms-2 me-auto" style={{ width: '100vw' }} onClick={handleItemClick}>
+        <div className="fw-bold" style={{ display: 'inline' }}>{text}</div>
+        <div>
+          {item.quantity}
+          &nbsp;
+          {item.unit}
+          &nbsp;
+          {(item.category !== undefined)
+            && <small style={{ fontStyle: 'italic', color: 'red' }}>{`#${item.category}`}</small>}
+        </div>
+      </div>
+      {removeItem && <button type="button" className={(selected ? 'btn-close btn-close-white' : 'btn-close')} aria-label="Close" onClick={localRemoveItem} />}
+    </li>
+  );
 }

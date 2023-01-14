@@ -2,7 +2,7 @@ import React, { useContext, useLayoutEffect, useRef } from 'react';
 import { Categories, Units } from '../consts/itemConsts';
 import { StorageContext } from '../contexts/storage';
 import { Item, ItemStatesAndSetters } from '../types/item';
-import { ItemDisplay } from './ItemDisplay';
+import ItemDisplay from './ItemDisplay';
 
 import '../styles/itemcontrols.css';
 
